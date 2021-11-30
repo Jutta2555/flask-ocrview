@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<style>
+  h1 {
+    text-align: center;
+  }
+  .btn-group button {
+    background-color: #04AA6D; /* Green background */
+    border: 1px solid green; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+    float: left; /* Float the buttons side by side */
+  }
+  
+  /* Clear floats (clearfix hack) */
+  .btn-group:after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  .btn-group button:not(:last-child) {
+    border-right: none; /* Prevent double borders */
+  }
+  
+  /* Add a background color on hover */
+  .btn-group button:hover {
+    background-color: #3e8e41;
+  }
+  .btn--secondary {
+    background-color: #fff;
+    color: var(--almost-black);
+    background: var(--secondary);
+  }
+  
+  .btn--secondary:hover {
+    background-color: rgb(66, 80, 212);
+    background: var(--secondary-dark);
+  }  
+  input[type="text"] {
+    border: 1px;
+    color: 	#1e5feb;
+    background-color: transparent;
+    position: absolute;
+    /*width: 200px;*/
+    padding-left: 5px;
+    font-size: 16px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+.card {
+  /*border: #1eeb39 solid 1px;*/
+  position: relative;
+  margin: 0 10px 20px; 
+  padding: 0px 60px;  
+  width: 1000px; justify-items: left;   box-shadow: 0 8px 26px -4px rgba(0,0,0,0.15); 
+  border-radius: 10px;  background: var(--white); transition: box-shadow .15s ease; 
+
+}
+img {
+  border: #1e5feb solid 1px;
+  transform: scale(1); 
+  height: 600px; width: 700px;
+  left: -50%; top: 0;
+  padding: 0px 0px; 
+  margin: 0px 0px ; border-radius: 5px 5px 0 0;  
+  width: 100%;
+}
+h3:hover+.tooltip {
+  display: block;
+}
+.tooltip { display: none; }
+button:hover+.tooltip { display: block; }
+</style>
+<title>
+  - Doc
+</title>
+
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> -->
+<div class="sidenav">
+  <a href="{{ url_for('index') }}">Home</a>
+  {% for page in range(listpage)  %}
+  <a href="{{ url_for('page',page=page ) }}"> [Doc {{ page +1 }}] </a>
+  {% endfor %}
+</div>
+
+<body>
+  {% if ocrdata %}
+    <h1 style="text-align: center;" >ชุดงานที่ {{ page+1}}</h1>
+  {% endif %}
+
+<div class="container"style="  margin: 0 0px 0px 0px;    padding: 0px 0px;    flex-wrap: wrap;    justify-content: left ;     display: flex;">
+
+
+    {% for cn in ocrdata  %}
+    <div class="card" >
+      {% if cn['checked']   %}
+      <h3 style="color: #1e5feb;">ตรวจสอบ File {{ cn['index_file']  }} แล้ว</h3> 
+      {% else %}
+      <h3 style="color:darkgoldenrod ;" >รอตรวจสอบ File {{ cn['index_file']  }}</h3> 
+      {% endif %}
+      <!-- <div class="tooltip">{{ cn['thaocr'] }}</div> -->
+      <!-- <div class="tooltip">{{ cn['engaocr'] }}</div> -->
+
+      <img src="{{ cn['filetext'] }}" srcset="" >
+      <form method="post" name="form{{ cn['index_file']}}">
+        
+        <input type="hidden" id="index_file" name="index_file" value="{{ cn['index_file'] }}" >
+        <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"  style="left: 300px;top: 175px;  ">
+        
+        <input type="text" id="fidname" name="name" value="{{ cn['name'] }}"  style="left: 190px;top: 220px;  ">
+        <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"  style="left: 600px;top: 220px;  ">
+        <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"  style="left: 740px;top: 220px;  ">
+        
+        <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"  style="left: 190px;top: 270px;  ">
+        <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"  style="left: 700px;top: 270px;  ">
+        
+        <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}"  style="left: 190px;top: 320px;  ">
+        <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}"  style="left: 380px;top: 320px;  ">
+        <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}"  style="left: 700px;top: 320px;  ">
+
+        <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"  style="left: 190px;top: 370px;  ">
+        <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"  style="left: 380px;top: 370px;  ">
+        <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}"  style="left: 700px;top: 370px;  ">
+        
+        <input type="text" id="faddr" name="addr" value="{{ cn['addr'] }}"  style="left: 190px;top: 430px;  ">
+        <input type="text" id="ftumbol" name="tumbol" value="{{ cn['tumbol'] }}"  style="left: 350px;top: 430px;  ">
+        <input type="text" id="faumphur" name="aumphur" value="{{ cn['aumphur'] }}"  style="left: 450px;top: 430px;  ">
+        <input type="text" id="fprovince" name="province" value="{{ cn['province'] }}"  style="left: 560px;top: 430px;  ">
+        <input type="text" id="fzipcode" name="zipcode" value="{{ cn['zipcode'] }}"  style="left: 650px;top: 430px;  ">
+
+        <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"  style="left: 250px;top: 600px;  ">
+
+
+
+        <div class="btn-group ">
+          <button type="submit" method="post"  >บันทึกไฟล์ {{ cn['index_file']}}</button>
+        </div>
+
+      </form> 
+
+    </div>
+    {% endfor %}
+  </div>
+
+</body>
+
+
+
+</div>
+<script>
+</script>
+
+</html>

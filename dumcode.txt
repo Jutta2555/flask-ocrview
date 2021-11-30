@@ -1,0 +1,157 @@
+        <div class="textname">
+            <input type="text" id="fnameid" name="fname" value="3-67-0454">
+        </div>
+        <div class="textdob">
+            <input type="text" id="fnameid" name="fname" value="3-67-0454">
+        </div>
+        <div class="textmname">
+            <input type="text" id="fnameid" name="fname" value="3-67-0454">
+        </div>
+        <div class="textmid">
+            <input type="text" id="fnameid" name="fname" value="3-67-0454">
+        </div>
+        <div class="textfname">
+            <input type="text" id="fnameid" name="fname" value="3-67-0454">
+        </div>
+        <div class="textfid">
+            <input type="text" id="fnameid" name="fname" value="3-67-0454">
+        </div>
+        <div class="textaddress">
+            <input type="text" id="faddr" name="faddr" value="3-67-0454">
+            <input type="text" id="ftumbul" name="ftumbul" value="3-67-0454">
+            <input type="text" id="faumphur" name="faumphur" value="3-67-0454">
+            <input type="text" id="fprovice" name="fprovice" value="3-67-0454">
+            <input type="text" id="fzipcode" name="fzipcode" value="3-67-0454">
+        </div>
+
+
+
+    {% if (cn+1) % 2==0 %}
+    <!-- ((index+1) % bufferlen)==0 -->
+
+
+    <!-- {% else %} -->
+
+    <div class="cardleft">
+        <h1 class="center">L Account{{ cn }}</h1>
+
+        <!-- <form name="signup_form"> -->
+        <img src="https://192.168.1.241:3001/RecoveryScan/stlscan/kk261164/ok/2021/11/26/kk_00000001.png" alt=""
+            srcset="">
+
+        <div class="textid">
+            <input type="text" id="fnameid" name="fname" value="3-67-0454">
+        </div>
+
+
+
+        <p class="error error--hidden"></p>
+        <input type="submit" value="Sign Up" class="btn">
+
+        <!-- </form> -->
+    </div>
+    {% endif %}
+
+
+
+
+    <div class="navbar">
+      <h1> <a href="{{ url_for('index') }}">Home</a> </h1>
+      <a href="{{ url_for('ocrview') }}">News</a>
+      <div class="dropdown">
+        <button class="dropbtn" onclick="myFunction()">เลือกเอกสาร
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="myDropdown">
+          {% for page in range(listpage)  %}
+          <input type="submit" name="page" id="{{ page }}" value="ชุดที่ {{ page }}">
+          <!-- <a href="{{ url_for('ocrview') }}" id="{{ page }}" >ชุดที่ {{ page }} </a> -->
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+
+    <div class="navbar">
+      <h1><a href="{{ url_for('index') }}">Home</a></h1>
+
+      <div class="dropdown">
+        <button class="dropbtn" onclick="myFunction()">เลือกเอกสาร
+          <i class="fa fa-caret-down"></i>
+        </button>
+        <div class="dropdown-content" id="myDropdown">
+          <a href="#">เอกสาร</a>
+          <a href="#">เพิ่มเอกสาร</a>        
+          {% for page in range(listpage)  %}
+          <ul><a href="{{ url_for('ocrview_id',page=page ) }}" > [Doc {{ page +1 }}] </a></ul>
+          {% endfor %}
+        </div>
+      </div> 
+    </div>
+
+
+R Account{'_id': ObjectId('61a0ad676e5b616d6ec1789b'), 
+'filescan': '/vsocr/kk261164/ok/2021/11/26/kk_00000001.png', 
+'index_file': 0, 
+'scandate': '"2021-11-26T09:48:21.069459"', 
+'thaocr': '1-1020-01026-42-8 ) 1609-003668-4\n\nนายภรต นารี ชาย ไทย ว ว\n28 กันยายน 2531 33 ผู้อาศัย\nเกียว 3-6201-00535-66-5 ไทย\nบังเอิญ - ไทย\n92 หมู่ 9 ต.หนองมะค่า อ.โคกเจริญ จ.ลพบุรี\n\nอําเภอโคกเจริญ\n\n26 ธันวาคม 2546\nบุคคลนี้มีภูมิลําเนาอยู่ในบ้านนี้\n\x0c', 'engocr': '1-1020-01026-42-8 | 1609-003668-4\n\nwreinsa wi4 a1 Ine | |\n28 NWeNeW 2531 33 aT Ae\nnei 3-620 1-00535-66-5 ine\nLALaay - ‘tne\n92 UNO AUUaAINeAT alaniasy aawis\n\nAUNALANLasey\n\n26 AWIAN 2546\nUARAUNAAAUuaduinuA\n\x0c', 
+'filetext': 'https://192.168.1.241:3001/RecoveryScan/stlscan/kk261164/ok/2021/11/26/kk_00000001.png', 
+'idcard': '1-1020-01026-42-8', 
+'nationality': 'ไทย', 
+'gender': 'ชาย', 
+'name': 'นายภรต นารี', 
+'dob': '28 กันยายน 2531', 
+'status': 'ผู้อาศัย', 
+'id_mother': '3-6201-00535-66-5', 
+'mothernation': 'ไทย', 
+'mother': 'เกียว', 
+'fathernation': 'ไทย', 
+'father': 'บังเอิญ', 
+'stlupdate': '26 ธันวาคม 2546', 
+'notes': 'บุคคลนี้มีภูมิลำเนาอยู่ในบ้านนี้', 
+'addr': '92 หมู่ 9 ', 'tumbol': 'หนองมะค่า', 
+'aumphur': 'โคกเจริญ', 'province': 'ลพบุรี', 
+'zipcode': 15250}
+
+
+  position: absolute;
+  left: 310px;  width: 200px;  top: 220px;  padding-left: 18px;  padding-right: 20px;
+
+
+page : ImmutableMultiDict([('fname', '1-1015-00759-56-0'), ('fname', '1-1015-00759-56-0'),
+
+
+#  Update STLDATA DICT FORMAT & APPEND ARRY OF HISTORYADDRESS
+def UpdatePersonAddr(mylist):
+    mycol=ConnectColdb(collectionnamep)
+    new_addr,strvalues='',''
+    listdata=[]
+    KEPTVAL=[1,3,4,5,6,7,8,13,18,20]
+    # db.personscan.updateOne({'idcard':'-'},{ $set: { status: "x" },$push : { historyaddr: {name :'น.ส.ชิดชนก เทพอาชา',stlupdate:'26 เมษายน 2532่ในบนนี',sican : new Date()}}})
+    # myquery={KEYSDICT[0]:mylist[KEYSDICT[0]]}
+    # newvalues={"$set":{KEYSDICT[4]:mylist[KEYSDICT[4]] },"$push":{"historyaddr": {KEYSDICT[4]:mylist[KEYSDICT[4]],KEYSDICT[5]:mylist[KEYSDICT[5]],KEYSDICT[20]:datetime.datetime.utcnow()}}}
+    # print()
+    # print (myquery)
+    # print()
+    # print (newvalues)
+    dumdic={}
+    for k,v in mylist.items():
+        if k=='idcard' :#idcard
+            myquery = { k :v }
+        else:
+            kept= KEYSDICT.index(k)
+            if kept in KEPTVAL :
+                dumdic[k]=v
+
+    # dumdic[KEYSDICT[20]]=datetime.datetime.utcnow()
+    newvalues={"$set":dumdic ,"$push":{"historyaddr":dumdic}}
+
+    try:
+        x =mycol.update_one(myquery,newvalues)
+        return x
+    except OperationFailure as e:           
+        print(f"couldn't execute insert_many mylist.\n error as  {str(e)}") 
+    return 
+        "index_file": 6,
+
+          <!-- <a class="action" type="submit" href="{{ url_for('update', id=cn['index_file'] ,page=page) }}">Edit</a> value="{{ cn['index_file']}} action="{{ url_for('update', id=cn['index_file'] ,page=page) }}"  -->

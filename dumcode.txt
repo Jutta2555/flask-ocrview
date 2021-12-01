@@ -155,3 +155,51 @@ def UpdatePersonAddr(mylist):
         "index_file": 6,
 
           <!-- <a class="action" type="submit" href="{{ url_for('update', id=cn['index_file'] ,page=page) }}">Edit</a> value="{{ cn['index_file']}} action="{{ url_for('update', id=cn['index_file'] ,page=page) }}"  -->
+
+  <!-- async function CheckedDoc(idindex_file) {
+    document.getElementById("ckecked"+index_file).style.color = "#1e5feb" ;
+    document.getElementById("ckecked"+index_file).innerHTML = "ตรวจสอบ File "+index_file+" แล้ว";
+  } -->
+
+          
+        <input type="hidden" id="index_file" name="index_file" value="{{ cn['index_file'] }}" >
+        <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}" >
+        <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"  style="left: 290px;top: 134px;  ">
+        
+        <input type="text" id="fidname" name="name" value="{{ cn['name'] }}"  style="left: 190px;top: 175px;  ">
+        <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"   style="left: 655px;top: 195px;  ">
+        <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"  style="left: 805px;top: 195px;   ">
+        
+        <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"  style="left: 190px;top: 270px;  ">
+        <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"  style="left: 700px;top: 270px;  ">
+        
+        <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}"  style="left: 190px;top: 320px;  ">
+        <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}"  style="left: 380px;top: 320px;  ">
+        <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}"  style="left: 700px;top: 320px;  ">
+
+        <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"  style="left: 190px;top: 370px;  ">
+        <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"  style="left: 380px;top: 370px;  ">
+        <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}"  style="left: 700px;top: 370px;  ">
+        
+        <input type="text" id="faddr" name="addr" value="{{ cn['addr'] }}"  style="left: 190px;top: 430px;  ">
+        <input type="text" id="ftumbol" name="tumbol" value="{{ cn['tumbol'] }}"  style="left: 350px;top: 430px;  ">
+        <input type="text" id="faumphur" name="aumphur" value="{{ cn['aumphur'] }}"  style="left: 450px;top: 430px;  ">
+        <input type="text" id="fprovince" name="province" value="{{ cn['province'] }}"  style="left: 560px;top: 430px;  ">
+        <input type="text" id="fzipcode" name="zipcode" value="{{ cn['zipcode'] }}"  style="left: 650px;top: 430px;  ">
+
+        <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"  style="left: 250px;top: 600px;  ">
+
+
+        <!--  <div class="btn-group "> -->
+          <!-- <button type="submit" method="post"  >บันทึกไฟล์ {{ cn['index_file']}}</button> -->
+          <!-- <button onclick="showData(document.getElementsById(c{{ cn['index_file']}}))"> ตรวจไฟล์ {{ cn['index_file']}}</button> -->
+        <!-- </div> --> 
+
+
+
+        <!-- <p id="c{{ cn['index_file']  }}" style="color:darkgoldenrod ;" >รอตรวจสอบ File {{ cn['index_file']  }}</p>  -->
+        <!-- <p id="c{{ cn['index_file']  }}" style="color: #1e5feb;">ตรวจสอบ File {{ cn['index_file']  }} แล้ว</p>action="url_for('/',page=page)"  -->
+        <input type="text" id="ftumbol" name="tumbol" value="{{ cn['tumbol'] }}"  style="left: 350px;top: 430px;  ">
+        <input type="text" id="faumphur" name="aumphur" value="{{ cn['aumphur'] }}"  style="left: 450px;top: 430px;  ">
+        <input type="text" id="fprovince" name="province" value="{{ cn['province'] }}"  style="left: 560px;top: 430px;  ">
+        <input type="text" id="fzipcode" name="zipcode" value="{{ cn['zipcode'] }}"  style="left: 650px;top: 430px;  ">

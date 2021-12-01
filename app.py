@@ -12,6 +12,10 @@ totalfile=mongo.db.personscan4.count_documents( {} )
 fileperpage=6
 print('totalfile :',totalfile)
 
+class OCRUser:  
+    def Update(self):      
+        return jsonify({ "error": "Invalid login credentials" }), 401
+                
 @app.route('/')
 def index():
     listpage=totalfile//fileperpage    
@@ -23,49 +27,30 @@ def index():
 @app.route('/page/<int:page>', methods=("GET","POST"))
 def page(page):
     """Update a author."""
-    print(id)
     print(page)
     if request.method == "POST":
+        myquery={'index_file':int(request.form['index_file'])}
         dumdict=dict(request.form)
+        if dumdict['checked']=='1' :
+            # print('checked')
+            # print(dumdict)
+            mongo.db.personscan4.update_one(myquery,{'$set':{'checked':0}})
+            return redirect(url_for('page', page=page))
+        
         dumdict['checked']=1
         dumdict.pop('index_file')
-
         newvalues = { "$set": dumdict }
-        myquery={'index_file':int(request.form['index_file'])}
-        # print(myquery)
-        # print(newvalues)
-        res=mongo.db.personscan4.update_one(myquery, newvalues)
-        # print(res)
-           
+        res=mongo.db.personscan4.update_one(myquery, newvalues)        
+        return redirect(url_for('page', page=page))
+
     listpage=totalfile//fileperpage    
     skipfile=fileperpage*int(page)
     ocrdata=mongo.db.personscan4.find().limit(fileperpage).skip(skipfile)
     return render_template('base.html',ocrdata=ocrdata,page=int(page),listpage=listpage)
 
-
-# @app.route("/<int:id>,<int:page>/update", methods=("GET", "POST"))
-# def update(id,page):
-#     """Update a author."""
-#     print(id)
-#     print(page)
-#     if request.method == "POST":
-#         dumdict=dict(request.form)
-#         dumdict['checked']=1
-#         dumdict.pop('index_file')
-
-#         newvalues = { "$set": dumdict }
-#         myquery={'index_file':int(request.form['index_file'])}
-#         print(myquery)
-#         print(newvalues)
-#         res=mongo.db.personscan4.update_one(myquery, newvalues)
-#         print(res)
-#         redirect(url_for('page',page=page))
-#     listpage=totalfile//fileperpage    
-#     skipfile=fileperpage*int(page)
-#     ocrdata=mongo.db.personscan4.find().limit(fileperpage).skip(skipfile)
-
-#     return  render_template('base.html',ocrdata=ocrdata,page=int(page),listpage=listpage)
-
+@app.route('/OCRuser/Update', methods=['POST'])
+def login():
+  return OCRUser().Update()
     
 if __name__ == '__main__':
     app.run(debug=True)

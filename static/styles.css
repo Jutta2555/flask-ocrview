@@ -1,10 +1,10 @@
-body {
-  font-family: "Lato", sans-serif;
-}
+/* body { */
+  /* font-family: "Lato", sans-serif; */
+/* } */
 
 .sidenav {
   height: 100%;
-  width: 160px;
+  width: 190px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -12,6 +12,7 @@ body {
   background-color:rgb(231, 223, 223);
    /* rgb(126, 126, 126); */
   overflow-x: hidden;
+  color: darkcyan;
   padding-top: 20px;
 }
 
@@ -19,7 +20,7 @@ body {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
-  color: #1e5feb;
+  /* color: #1e5feb; */
   display: block;
 }
 
@@ -42,51 +43,25 @@ body {
 h1 {
   text-align: center;
 }
-.btn-group button {
-  background-color: #04AA6D; /* Green background */
-  border: 1px solid green; /* Green border */
-  color: white; /* White text */
-  padding: 10px 24px; /* Some padding */
-  cursor: pointer; /* Pointer/hand icon */
-  float: left; /* Float the buttons side by side */
-}
 
-/* Clear floats (clearfix hack) */
-.btn-group:after {
-  content: "";
-  clear: both;
-  display: table;
-}
-
-.btn-group button:not(:last-child) {
-  border-right: none; /* Prevent double borders */
-}
-
-/* Add a background color on hover */
-.btn-group button:hover {
-  background-color: #3e8e41;
-}
-.btn--secondary {
-  background-color: #fff;
-  color: var(--almost-black);
-  background: var(--secondary);
-}
-
-.btn--secondary:hover {
-  background-color: rgb(66, 80, 212);
-  background: var(--secondary-dark);
-}  
 input[type="text"] {
   border: 1px;
-  color:#696969;
-  /* color: 	#1e5feb; */
+  color:black; 
   background-color: transparent;
   position: absolute;
-  /*width: 200px;*/
-  padding-left: 5px;
-  font-size: 16px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  /* padding-left: 5px; */
+  /* margin-bottom: 10px; */
+  /* text-size-adjust: 60%; */
+  /* line-height: 10%; */
+  /* padding-top: 10px;
+  padding-bottom: 10px; */
+  width: 30%;
+  font-family: 'Sarabun', sans-serif;
+  text-indent: 20px;
+  /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
+  /* font-family: 'Lucida Sans Unicode' ; */
 }
+/*, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans',Arial, sans-serif*/
 .card {
 border: #1eeb39 solid 0px;
 position: relative;
@@ -103,6 +78,7 @@ transform: scale(1);
 left: -50%; top: 0;
 padding: 0px 0px; 
 margin: 0px 0px ; border-radius: 5px 5px 0 0;  
+opacity: 0.6;
 
 }
 h3:hover+.tooltip {
@@ -111,64 +87,209 @@ display: block;
 .tooltip { display: none; }
 button:hover+.tooltip { display: block; }
 /* transform: scale(1);   height: 508px; width: 921px;width: 100%; The switch - the box around the slider   width: 961px;  height: 808px; */
+/*  */
+
+
 .switch {
-position: relative;
-display: inline-block;
-width: 60px;
-height: 34px;
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 35px;
+  margin-left: 20px;
+  margin-bottom: 15px;
+  /* bottom: 850px; */
+  }
+  
+  /* Hide default HTML checkbox */
+  .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  }
+  
+  /* The slider */
+  .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .1s;
+  transition: .1s;
+  }
+  
+  .slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .1s;
+  transition: .1s;
+  }
+  
+  input:checked + .slider {
+  background-color: #2196F3;
+  
+  }
+  
+  input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+  -webkit-transform: translateX(100px);
+  -ms-transform: translateX(50px);
+  transform: translateX(46px);
+  }
+  
+  /* Rounded sliders */
+  .slider.round {
+  border-radius: 34px;
+  }
+  
+  .slider.round:before {
+  border-radius: 50%;
+  }
+  
+/*  จัดข้อความยายตาม ตัวอักษร*/
+  #relative-parent {
+    position: relative;
+    min-width: 1em;
+    width: min-content;
+  }
+
+  #size-calibration {
+    visibility: hidden;
+    /* Prevent the span from wrapping the text when input value has multiple words, or collapsing multiple spaces into one */
+    white-space: pre;
+  }
+
+  #autosized-input {
+    position: absolute;
+    left: 0;
+    width: 100%;
+  }
+  
+  #size-calibration, #autosized-input {
+    /* Normalize styles that the browser sets differently between spans and inputs. 
+    Ideally, use a "CSS reset" here. */
+    font-family: "Arial";
+    padding: 0;
+    /* Demonstrate that this works for input with custom styles */
+    font-size: 24px;
+  }
+
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 800px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  * {box-sizing: border-box;}
+
+
+/* Button used to open the contact form - fixed at the bottom of the page */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  position: fixed;
+  left: 10px;
+  /* right: 28px; */
+  width: 180px;
 }
 
-/* Hide default HTML checkbox */
-.switch input {
-opacity: 0;
-width: 0;
-height: 0;
+/* The popup form - hidden by default */
+.form-popup {
+  display: none;
+  position: fixed;
+  left: 10px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
 }
 
-/* The slider */
-.slider {
-position: absolute;
-cursor: pointer;
-top: 0;
-left: 0;
-right: 0;
-bottom: 0;
-background-color: #ccc;
--webkit-transition: .1s;
-transition: .1s;
+/* Add styles to the form container */
+.form-container {
+  max-width: 400px;
+  padding: 10px;
+  background-color: white;
 }
 
-.slider:before {
-position: absolute;
-content: "";
-height: 26px;
-width: 26px;
-left: 4px;
-bottom: 4px;
-background-color: white;
--webkit-transition: .1s;
-transition: .1s;
+/* Full-width input fields */
+.form-container input[type=text], .form-container input[type=password] {
+  width: 60%;
+  /* padding: 15px; */
+  /* margin: 5px 0 22px 0; */
+  border: none;
+  background: #f1f1f1;
 }
 
-input:checked + .slider {
-background-color: #2196F3;
+/* When the inputs get focus, do something */
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
 }
 
-input:focus + .slider {
-box-shadow: 0 0 1px #2196F3;
+/* Set a style for the submit/login button */
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
 }
 
-input:checked + .slider:before {
--webkit-transform: translateX(26px);
--ms-transform: translateX(26px);
-transform: translateX(26px);
+/* Add a red background color to the cancel button */
+.form-container .cancel {
+  background-color: red;
 }
 
-/* Rounded sliders */
-.slider.round {
-border-radius: 34px;
-}
-
-.slider.round:before {
-border-radius: 50%;
+/* Add some hover effects to buttons */
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
 }

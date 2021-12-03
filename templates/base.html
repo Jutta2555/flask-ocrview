@@ -1,153 +1,56 @@
 <!DOCTYPE html>
 <html>
-<!-- <style>
-  h1 {
-    text-align: center;
-  }
-  .btn-group button {
-    background-color: #04AA6D; /* Green background */
-    border: 1px solid green; /* Green border */
-    color: white; /* White text */
-    padding: 10px 24px; /* Some padding */
-    cursor: pointer; /* Pointer/hand icon */
-    float: left; /* Float the buttons side by side */
-  }
-  
-  /* Clear floats (clearfix hack) */
-  .btn-group:after {
-    content: "";
-    clear: both;
-    display: table;
-  }
-  
-  .btn-group button:not(:last-child) {
-    border-right: none; /* Prevent double borders */
-  }
-  
-  /* Add a background color on hover */
-  .btn-group button:hover {
-    background-color: #3e8e41;
-  }
-  .btn--secondary {
-    background-color: #fff;
-    color: var(--almost-black);
-    background: var(--secondary);
-  }
-  
-  .btn--secondary:hover {
-    background-color: rgb(66, 80, 212);
-    background: var(--secondary-dark);
-  }  
-  input[type="text"] {
-    border: 1px;
-    color: 	#1e5feb;
-    background-color: transparent;
-    position: absolute;
-    /*width: 200px;*/
-    padding-left: 5px;
-    font-size: 16px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-.card {
-  border: #1eeb39 solid 1px;
-  position: relative;
-  margin: 0 10px 20px; 
-  padding: 10px 60px;  
-  width: 1400px; 
-  justify-items: left;   box-shadow: 0 8px 26px -4px rgba(0,0,0,0.15); 
-  border-radius: 10px;  background: var(--white); transition: box-shadow .15s ease; 
-
-}
-img {
-  border: #1e5feb solid 1px;
-  transform: scale(1); 
-  left: -50%; top: 0;
-  padding: 0px 0px; 
-  margin: 0px 0px ; border-radius: 5px 5px 0 0;  
-  
-}
-h3:hover+.tooltip {
-  display: block;
-}
-.tooltip { display: none; }
-button:hover+.tooltip { display: block; }
-/* transform: scale(1);   height: 508px; width: 921px;width: 100%; The switch - the box around the slider   width: 961px;  height: 808px; */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .1s;
-  transition: .1s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .1s;
-  transition: .1s;
-}
-
-input:checked + .slider {
-  background-color: #2196F3;
-}
-
-input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-}
-
-input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-</style> -->
+<head>
+  <!-- <meta charset="utf-8"> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>
   OCR STL
 </title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@100&display=swap" rel="stylesheet">
+
+
 
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-<div class="sidenav" id="mySidebar">
-  <a href="{{ url_for('index') }}">Home</a>
-  {% for page in range(listpage)  %}
-  <a href="{{ url_for('page',page=page ) }}"> [Doc {{ page +1 }}] </a>
-  {% endfor %}
-</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
+<!-- <script src="static/js/signUp.js"></script> -->
+
 
 <body>
+  <div class="sidenav" id="mySidebar">
+    <a href="{{ url_for('index') }}">Home</a>
+    <hr>
+    <h3 style="text-align: center;">ตรวจสอบ {{totalcheked}} /{{totalfile}}</h3>
+    <hr>
+    <h4 style="text-align: center;" onclick="openForm()" >ฐานคำผิดบ่อย {{totalcheked}} /{{totalfile}}</h4>
+
+    <!-- <button class="open-button" onclick="openForm()" >Open Form</button> -->
+    <div class="form-popup" id="misform" name="misform" >
+      <form class="form-container" method="post" id="fmisform" name="fmisform" >
+        <h1>เพิ่มคำผิดบ่อย</h1>
+    
+        <label for="email"><b>คำผิด </b></label>
+        <input type="text" id="misword" name="misword" required>
+        <br>
+    
+        <label for="psw"><b>คำแก้ไข </b></label>
+        <input type="text" id="rghword" name="rghword" required>
+    
+        <button type="button" class="btn" onclick="addmissword()" >เพิ่มคำผิดบ่อย</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+        
+      </form>
+    </div>
+    
+    <hr>
+    {% for page in range(listpage)  %}
+    <a href="{{ url_for('page',page=page ) }}"> ชุดไฟล์ที่ {{ page +1 }} </a>
+    {% endfor %}
+  </div>
+  
   {% if ocrdata %}
     <h1 style="text-align: center;" >ชุดงานที่ {{ page+1}}</h1>
   {% endif %}
@@ -157,55 +60,58 @@ input:checked + .slider:before {
 
     {% for cn in ocrdata  %}
     <div class="card" id="card{{ cn['index_file']}}" >
-      <!-- <a href="#submit{{ cn['index_file']}}" onclick="w3_close()" >AT ME</a> -->
  
       <img src="{{ cn['filetext'] }}" srcset="" >
-      <form method="post"  name="form{{ cn['index_file']}}" >
+      <form  role="form" method="post" name="form{{ cn['index_file']}}" id="form{{ cn['index_file']}}" >
 
-        {% if cn['checked'] %}
-          <input type="submit" href="#card{{ cn['index_file']}}" value="Submit" onclick="w3_close()" style="background-color: aliceblue;" >
+        <label class="checkbox-inline">
 
-
-        <!-- <label method="post" class="switch">
-          <input  method="post" type="checkbox" checked onchange="this.form.submit(); w3_close();" href="#submit{{ cn['index_file']}}" >
-          <span  class="slider round"></span> 
-        </label>  -->
-        {% else %}
-        <input type="submit" href="#card{{ cn['index_file']}}" value="Submit" onclick="w3_close()" style="background-color: rgba(13, 128, 228, 0.801);" >
-        <!-- <label class="switch" >
-          <input  method="post" type="checkbox" onchange="this.form.submit(); w3_close();" href="#submit{{ cn['index_file']}}" >
+        <label class="switch" >
+          {% if cn['checked'] %}
+          <input onclick="mycheck({{ cn['index_file']}})"  type="checkbox" checked>
+          {% else %}
+          <input   onclick="mycheck({{ cn['index_file']}})" type="checkbox"  >
+          {% endif %}
           <span  class="slider round"></span>
-        </label>  -->
-  
-        {% endif %}
+        </label> 
+        <!-- <div id="relative-parent"> -->
+          <!-- <span id="size-calibration"></span>                 -->
           
-        <input type="hidden" id="index_file" name="index_file" value="{{ cn['index_file'] }}" >
-        <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}" >
-        <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}" style="left: 395px;top: 125px;font-size: 16px;  ">
-        
-        <input type="text" id="fidname" name="name" value="{{ cn['name'] }}" style="left: 250px;top: 185px;font-size: 20px;  ">
-        <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"  style="left: 920px;top: 210px;font-size: 20px;  ">
-        <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"  style="left: 1130px;top: 210px;font-size: 20px;   ">
-        
-        <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"   style="left: 250px;top: 260px;font-size: 20px; ">
-        <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"  style="left: 1060px;top: 280px;font-size: 20px;  ">
-        
-        <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}" style="left: 250px;top: 340px;font-size: 20px; ">
-        <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}" style="left: 510px;top: 340px;font-size: 16px;  ">
-        <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}" style="left: 1030px;top: 365px;font-size: 20px;  ">
+            <input type="hidden" id="index_file" name="index_file" value="{{ cn['index_file'] }}" >
+            <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}" >
+            <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}" style="left: 395px;top: 125px;font-size: 22px;  ">
+            
+            <input type="text" id="fidname" name="name" value="{{ cn['name'] }}" style="left: 250px;top: 185px;font-size: 22px;  ">
+            <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"  style="left: 920px;top: 210px;font-size: 20px;  ">
+            <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"  style="left: 1130px;top: 210px;font-size: 20px;   ">
+            
+            <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"   style="left: 250px;top: 260px;font-size: 20px; ">
+            <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"  style="left: 1060px;top: 280px;font-size: 20px;  ">
+            
+            <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}" style="left: 250px;top: 340px;font-size: 20px; ">
+            <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}" style="left: 510px;top: 340px;font-size: 16px;  ">
+            <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}" style="left: 1030px;top: 365px;font-size: 20px;  ">
 
-        <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"  style="left: 250px;top: 415px;font-size: 20px;    ">
-        <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"  style="left: 510px;top: 410px;font-size: 16px; ">
-        <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}" style="left: 1030px;top: 435px;font-size: 20px;   ">
-        
-        <input type="text" id="faddr" name="addr" value="{{ cn['addr'] }}"  style="left: 250px;top: 570px;font-size: 20px;    ">
-        <input type="text" id="ftumbol" name="tumbol" value="{{ cn['tumbol'] }}" style="left: 450px;top: 570px;font-size: 20px;    ">
-        <input type="text" id="faumphur" name="aumphur" value="{{ cn['aumphur'] }}" style="left: 600px;top: 570px;font-size: 20px;  ">
-        <input type="text" id="fprovince" name="province" value="{{ cn['province'] }}"  style="left: 750px;top: 570px;font-size: 20px;   ">
-        <input type="text" id="fzipcode" name="zipcode" value="{{ cn['zipcode'] }}" style="left: 850px;top: 574px;font-size: 16px;  ">
+            <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"  style="left: 250px;top: 415px;font-size: 20px;    ">
+            <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"  style="left: 510px;top: 410px;font-size: 16px; ">
+            <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}" style="left: 1030px;top: 435px;font-size: 20px;   ">
+            
+            <input type="text" id="faddr" name="addr" value="{{ cn['addr'] }}"  style="left: 250px;top: 569px;font-size: 20px;  background-color: whitesmoke;   ">
+            <label for="ftumbol" style=" position: absolute;left: 230px;top: 599px;font-size: 20px; ">ต.</label><br>
+            <input type="text" id="ftumbol" name="tumbol" value="{{ cn['tumbol'] }}" style="left: 250px;top: 599px;font-size: 20px; background-color: whitesmoke;    ">
+            <label for="faumphur" style=" position: absolute;left: 230px;top: 630px;font-size: 20px; ">อ.</label><br>
+            <input type="text" id="faumphur" name="aumphur" value="{{ cn['aumphur'] }}" style="left: 250px;top: 628px;font-size: 20px;background-color: whitesmoke;  ">
+            <label for="fprovince" style=" position: absolute;left: 230px;top: 660px;font-size: 20px; ">จ.</label><br>
+            <input type="text" id="fprovince" name="province" value="{{ cn['province'] }}"  style="left: 250px;top: 657px;font-size: 20px;background-color: whitesmoke;   ">
+            <input type="text" id="fzipcode" name="zipcode" value="{{ cn['zipcode'] }}" style="left: 250px;top: 686px;font-size: 16px;background-color: whitesmoke;  ">
 
-        <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"   style="left: 360px;top: 840px;font-size: 20px;  ">
-
+            <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"   style="left: 360px;top: 840px;font-size: 20px; width: 70%;  ">
+            <div class="tooltip">.......thai Ocr......   
+              <span class="tooltiptext">{{ cn['thaocr'] }}</span>
+            </div>
+            <div class="tooltip" style="margin-left: 700px;" >.....English Ocr......
+              <span class="tooltiptext">{{ cn['engocr'] }}</span>
+            </div>
 
       </form> 
 
@@ -218,20 +124,61 @@ input:checked + .slider:before {
 
 
 </div>
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"
-          integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
-          crossorigin="anonymous"></script> -->
-<script>          
-    // Script to open and close sidebar
-      function w3_open() {
-        document.getElementById("mySidebar").style.display = "block";
-        document.getElementById("myOverlay").style.display = "block";
-    }    
-    function w3_close() {
-      document.getElementById("mySidebar").style.display = "none";
-      document.getElementById("myOverlay").style.display = "none";
+<script>
+
+
+  function mycheck(id) {
+    dataform = $("#form"+id).serialize() ;// JSON.stringify($("#form"+id).serializeArray());
+    $.ajax({
+      url: '/toggleUpdate',
+      data: dataform , //$('form').serialize(),
+      type: 'POST',
+      success: function(response){
+        if (response == '"Cancle"') {
+          document.getElementById("checked").value=0;
+          console.log("cancle");
+        } else {
+          document.getElementById("checked").value=1;
+          console.log("Good ");
+        }        
+      },
+      error: function(error){
+        console.log(error);
+      }
+    });
+
   }
-</script> 
+    
+  function addmissword() {
+    dataform = $("#fmisform").serialize() ;// JSON.stringify($("#form"+id).serializeArray());
+    $.ajax({
+      url: '/addmissword',
+      data: dataform , //$('form').serialize(),
+      type: 'POST',
+      success: function(response){
+        if (response == '"add"') {
+          document.getElementById("misword").value="";
+          document.getElementById("rghword").value="";
+          console.log("addmissword");
+        }        
+      },
+      error: function(error){
+        console.log(error);
+      }
+    });
+
+  }
+
+  function openForm() {
+    document.getElementById("misform").style.display = "block";
+  }
+  
+  function closeForm() {
+    document.getElementById("misform").style.display = "none";
+  }
+
+  
+</script>
 <!-- <script type="text/javascript">
     $(document).on('submit','#todo-form',function(e)
                    {

@@ -203,3 +203,128 @@ def UpdatePersonAddr(mylist):
         <input type="text" id="faumphur" name="aumphur" value="{{ cn['aumphur'] }}"  style="left: 450px;top: 430px;  ">
         <input type="text" id="fprovince" name="province" value="{{ cn['province'] }}"  style="left: 560px;top: 430px;  ">
         <input type="text" id="fzipcode" name="zipcode" value="{{ cn['zipcode'] }}"  style="left: 650px;top: 430px;  ">
+
+    var checked = document.getElementById("checked"+id);
+    var index_file = document.getElementById("index_file"+id);
+    var idcard = document.getElementById("fidcard"+id);
+    var name = document.getElementById("fidname"+id);
+    var gender=document.getElementById("fgender"+id);
+    var nationality= document.getElementById("fnationality"+id);
+    var mother = document.getElementById("fmother"+id);
+    var id_mother = document.getElementById("fid_mother"+id);
+    var mothernation = document.getElementById("fmothernation"+id);
+    var father = document.getElementById("ffather"+id);
+    var id_father = document.getElementById("fid_father"+id);
+    var fathernation = document.getElementById("ffathernation"+id);
+    var addr = document.getElementById("faddr"+id);
+    var tumbol = document.getElementById("ftumbol"+id);
+    var aumphur = document.getElementById("faumphur"+id);
+    var province = document.getElementById("fprovince"+id);
+    var zipcode = document.getElementById("fzipcode"+id);
+    var notes = document.getElementById("fnotes"+id);
+
+    var form = document.getElementById("form"+id);//console.log(form);
+    formData= new FormData(form)//    
+    console.log(formData);
+    dataform=JSON.stringify(Object.fromEntries(formData))
+
+    .switch {
+position: relative;
+display: inline-block;
+width: 80px;
+height: 35px;
+margin-left: 1300px;
+margin-bottom: 15px;
+bottom: 850px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+opacity: 0;
+width: 0;
+height: 0;
+}
+
+/* The slider */
+.slider {
+position: absolute;
+cursor: pointer;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: #ccc;
+-webkit-transition: .1s;
+transition: .1s;
+}
+
+.slider:before {
+position: absolute;
+content: "";
+height: 26px;
+width: 26px;
+left: 4px;
+bottom: 4px;
+background-color: white;
+-webkit-transition: .1s;
+transition: .1s;
+}
+
+input:checked + .slider {
+background-color: #2196F3;
+
+}
+
+input:focus + .slider {
+box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+-webkit-transform: translateX(100px);
+-ms-transform: translateX(50px);
+transform: translateX(46px);
+}
+
+/* Rounded sliders */
+.slider.round {
+border-radius: 34px;
+}
+
+.slider.round:before {
+border-radius: 50%;
+}
+
+.btn-group button {
+  background-color: #04AA6D; /* Green background */
+  border: 1px solid green; /* Green border */
+  color: white; /* White text */
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+}
+
+/* Clear floats (clearfix hack) */
+.btn-group:after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+.btn-group button:not(:last-child) {
+  border-right: none; /* Prevent double borders */
+}
+
+/* Add a background color on hover */
+.btn-group button:hover {
+  background-color: #3e8e41;
+}
+.btn--secondary {
+  background-color: #fff;
+  color: var(--almost-black);
+  background: var(--secondary);
+}
+
+.btn--secondary:hover {
+  background-color: rgb(66, 80, 212);
+  background: var(--secondary-dark);
+}  

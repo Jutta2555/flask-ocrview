@@ -16,7 +16,7 @@
 <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> 
-<!-- <script src="static/js/signUp.js"></script> -->
+<script src="{{ url_for('static', filename='scripts.js') }}"></script>
 
 
 <body>
@@ -127,55 +127,6 @@
 <script>
 
 
-  function mycheck(id) {
-    dataform = $("#form"+id).serialize() ;// JSON.stringify($("#form"+id).serializeArray());
-    $.ajax({
-      url: '/toggleUpdate',
-      data: dataform , //$('form').serialize(),
-      type: 'POST',
-      success: function(response){
-        if (response == '"Cancle"') {
-          document.getElementById("checked").value=0;
-          console.log("cancle");
-        } else {
-          document.getElementById("checked").value=1;
-          console.log("Good ");
-        }        
-      },
-      error: function(error){
-        console.log(error);
-      }
-    });
-
-  }
-    
-  function addmissword() {
-    dataform = $("#fmisform").serialize() ;// JSON.stringify($("#form"+id).serializeArray());
-    $.ajax({
-      url: '/addmissword',
-      data: dataform , //$('form').serialize(),
-      type: 'POST',
-      success: function(response){
-        if (response == '"add"') {
-          document.getElementById("misword").value="";
-          document.getElementById("rghword").value="";
-          console.log("addmissword");
-        }        
-      },
-      error: function(error){
-        console.log(error);
-      }
-    });
-
-  }
-
-  function openForm() {
-    document.getElementById("misform").style.display = "block";
-  }
-  
-  function closeForm() {
-    document.getElementById("misform").style.display = "none";
-  }
 
   
 </script>

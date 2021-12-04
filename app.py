@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.secret_key = 'secret'
 app.config["MONGO_URI"] = "mongodb://192.168.1.230:27017/addrocrtha"
 mongo = PyMongo(app) #addrocrtha.personscan4
-conllection = mongo.db.personscan4
+conllection = mongo.db.personscan5
 
 totalfile=conllection.count_documents( {} )
 totalcheked=conllection.count_documents( {"checked":1})

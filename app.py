@@ -3,18 +3,15 @@ from flask_pymongo import PyMongo
 import json
 from pymongo.errors import ConnectionFailure, OperationFailure
 
+
 app = Flask(__name__)
 app.secret_key = 'secret'
 app.config["MONGO_URI"] = "mongodb://192.168.1.230:27017/addrocrtha"
 mongo = PyMongo(app) #addrocrtha.personscan4
-conllection = mongo.db.personscan5
-
-totalfile=conllection.count_documents( {} )
-totalcheked=conllection.count_documents( {"checked":1})
+# conllection = mongo.db.personscan5
+conllection = mongo.db.personscan6
 fileperpage=10
-print('totalfile :',totalfile)
-
-
+info=dict()
 #  INSERT ONE STLDATA DICT FORMAT
 def finddocumentcmissthai(stldata):
     try:
@@ -36,19 +33,30 @@ def Insertmissword(stldata):
                 
 @app.route('/')
 def index():
-    listpage=totalfile//fileperpage    
+    global info
+    conllection = mongo.db.personscan5
+    totalcheked=conllection.count_documents( {"checked":1})
+    totalcmissthai=mongo.db.cmissthai.count_documents( {})   
+    totalfile=conllection.count_documents( {} )
+    listpage=totalfile//fileperpage
+    info={'totalcheked':totalcheked,'totalcmissthai':totalcmissthai,'totalfile':totalfile,'listpage':listpage}    
     page=0
-    return render_template('base.html',ocrdata=[],page=int(page),listpage=listpage,totalcheked=totalcheked,totalfile=totalfile)
+    return render_template('base.html',ocrdata=[],listpage=listpage,info=info, totalcheked=totalcheked,totalfile=totalfile)
 
 @app.route('/page/<int:page>')
 def page(page):
+    global info
     """Update a author."""
     # print(page)
-    listpage=totalfile//fileperpage    
+    # listpage=totalfile//fileperpage    
     skipfile=fileperpage*int(page)
     totalcheked=conllection.count_documents( {"checked":1})
+    info['totalcheked']=totalcheked
+    listpage=info['listpage']
+    totalfile=info['totalfile']
     ocrdata=conllection.find().limit(fileperpage).skip(skipfile)
-    return render_template('base.html',ocrdata=ocrdata,page=int(page),listpage=listpage,totalcheked=totalcheked,totalfile=totalfile)
+    return render_template('base.html',ocrdata=ocrdata,page=int(page),listpage=listpage,info=info,totalcheked=totalcheked,totalfile=totalfile)
+                        #    listpage=listpage,totalcheked=totalcheked,totalfile=totalfile) 
 
     
 @app.route('/toggleUpdate', methods=['POST'])

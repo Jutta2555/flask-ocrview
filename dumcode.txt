@@ -328,3 +328,23 @@ border-radius: 50%;
   background-color: rgb(66, 80, 212);
   background: var(--secondary-dark);
 }  
+
+
+FLASK_APP=app.py  
+FLASK_ENV = development  
+FLASK_DEBUG= 1  
+flask run
+
+docker build -t ocrview:1.0 .
+
+docker container run -dit -p 5000:5000 --name=ocrwebv1 -v $PWD:/app  ocrview:1.0
+docker exec -it fwebv2  pip list
+
+
+docker container commit -a swoprogrammer@gmail.com 45b5603227c0 romeo097/ocrview:v1mongo
+
+docker commit e20b85626de1 romeo097/ocrview:v1mongo
+
+docker push romeo097/ocrview:v1mongo
+
+docker container run -dit -p 5000:5000 --name=ocrwebv1-ps5 -v $PWD:/app  romeo097/ocrview:v1mongo

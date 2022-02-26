@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {{info['conllection']}}-STL v1.{{info['version']}}
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@100&display=swap" rel="stylesheet">
+
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</head>
+
+
+<body>
+    <div class="sidenav" id="mySidebar">
+        <a href="{{ url_for('index') }}">หน้าหลัก</a>
+        <!-- <hr>
+        <a href="{{ url_for('index') }}">Location Data</a>
+        <hr> -->
+    </div>
+
+    <div class="container" style=" flex-wrap: wrap;justify-content: center ; display: flex;">
+
+
+        {% for cn in ocrdata %}
+        <div class="card" id="card{{ cn['index_of_lotfile']}}">
+            <img src="{{ cn['filedesinat'] }}" srcset="">
+            <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
+
+                <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
+                <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}">
+                <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
+                    style="left: 363px;top: 120px;font-size: 22px;  ">
+
+                <input type="text" id="fidname" name="Name" value="{{ cn['Name'] }}"
+                    style="left: 230px;top: 168px;font-size: 20px;  ">
+                <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"
+                    style="left: 850px;top: 205px;font-size: 20px;  ">
+                <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"
+                    style="left: 1080px;top: 205px;font-size: 20px;   ">
+
+                <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"
+                    style="left: 230px;top: 240px;font-size: 20px; ">
+                <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"
+                    style="left: 1040px;top: 270px;font-size: 20px;  ">
+
+                <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}"
+                    style="left: 230px;top: 315px;font-size: 20px; ">
+                <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}"
+                    style="left: 508px;top: 315px;font-size: 16px;  ">
+                <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}"
+                    style="left: 980px;top: 345px;font-size: 20px;  ">
+
+                <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"
+                    style="left: 230px;top: 385px;font-size: 20px;    ">
+                <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"
+                    style="left: 510px;top: 385px;font-size: 16px; ">
+                <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}"
+                    style="left: 980px;top: 415px;font-size: 20px;   ">
+
+                <input type="text" id="faddr" name="address" value="{{ cn['address'] }}"
+                    style="left: 250px;top: 555px;font-size: 20px;  background-color: whitesmoke;   ">
+                <label for="ftumbol"
+                    style=" position: absolute;left: 230px;top: 589px;font-size: 20px; height:40px; ">ต.</label><br>
+                <input type="text" id="ftumbol" name="TUMBUL" value="{{ cn['TUMBUL'] }}"
+                    style="left: 250px;top: 589px;font-size: 20px; background-color: whitesmoke;    ">
+                <label for="faumphur"
+                    style=" position: absolute;left: 230px;top: 623px;font-size: 20px;  height:40px;">อ.</label><br>
+                <input type="text" id="faumphur" name="AUMPUR" value="{{ cn['AUMPUR'] }}"
+                    style="left: 250px;top: 623px;font-size: 20px;background-color: whitesmoke;  ">
+                <label for="fprovince"
+                    style=" position: absolute;left: 230px;top: 657px;font-size: 20px; height:40px; ">จ.</label><br>
+                <input type="text" id="fprovince" name="PROVINCE" value="{{ cn['PROVINCE'] }}"
+                    style="left: 250px;top: 657px;font-size: 20px;background-color: whitesmoke;   ">
+                <input type="text" id="fzipcode" name="ZIPCODE" value="{{ cn['ZIPCODE'] }}"
+                    style="left: 250px;top: 690px;font-size: 16px;background-color: whitesmoke;  ">
+
+                <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"
+                    style="left: 360px;top: 800px;font-size: 20px; width: 70%;  ">
+
+
+                <label class="switch">
+                    {% if cn['checked'] %}
+                    <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox" checked>
+                    {% else %}
+                    <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox">
+                    {% endif %}
+                    <span class="slider round"></span>
+                </label> <br>
+                <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} /
+                    ความแม่นยำชื่อ =
+                    {{
+                    cn['accu_name'] }}</h3>
+
+            </form>
+
+        </div>
+
+        {% endfor %}
+    </div>
+
+
+</body>
+
+</html>

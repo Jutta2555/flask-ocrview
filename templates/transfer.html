@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {{info['conllection']}}-STL v1.{{info['version']}}
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@100&display=swap" rel="stylesheet">
+
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</head>
+
+
+<body>
+    <div class="sidenav" id="mySidebar">
+        <a href="{{ url_for('index') }}">หน้าหลัก</a>
+        <hr>
+        <a href="{{ url_for('index') }}">Location Data</a>
+        <hr>
+        <h3 style="text-align: center;">ข้อมูลการสแกนไฟล์ รอบงานที่ {{info['ocrlot']}} </h3>
+
+
+        <hr>
+    </div>
+    <!-- <h1>{{info['conllection']}}-Transfer v1.{{info['version']}}</h1> -->
+    <div class="container" style=" flex-wrap: wrap;justify-content: center ; display: flex;">
+
+
+        <div class="card-blue">
+            <!-- <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card"> -->
+            <div class="card-header">
+                <h2>ข้อมูล </h2>
+            </div>
+            <div class="card-body">
+                <form role="form" method="post" name="form{{info['ocrlot']}}" id="form{{info['ocrlot']}}">
+                    <input type="hidden" id="ocrlot" name="ocrlot" value="{{info['ocrlot']}}">
+                    <!-- <input onclick="mytransfer({{info['ocrlot']}})"> -->
+                    <label class="switch" style="position: absolute;">
+                        <input onclick="mytransfer({{info['ocrlot']}})" type="checkbox" name="checked">
+                        <span class="slider round"></span>
+                    </label>
+                </form>
+                <h2>{{info['transfer']}}</h2>
+                <h2>{{info['loaddata']}}</h2>
+
+                <!-- 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="">ชื่อสถานที่</label>
+                        <input type="text" class="form-control" id="location_name" value="{{info['location_name']}}"
+                            disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="">ชื่อสถานที่ภาษาอังกฤษ</label>
+                        <input type="text" class="form-control" id="location_name_en"
+                            value="{{info['location_name_en']}}" disabled>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="">ชื่อสถานที่ภาษาจีน</label>
+                        <input type="text" class="form-control" id="location_name_cn"
+                            value="{{info['location_name_cn']}}" disabled>
+                    </div>
+                </div>
+            </div> -->
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>

@@ -6,75 +6,88 @@
   <!-- <meta charset="utf-8"> -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>
-    {{info['conllection']}}-STL v3.{{info['version']}}
+    {{info['conllection']}}-STL v2.{{info['version']}}
   </title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@100&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
   <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 
 </head>
 
 <body>
+  <div class="sidenav" id="mySidebar">
+    {% if ocrdata %}
+    <a href="{{ url_for('index') }}">หน้าหลัก({{ page+1}})</a>
+    {% else %}
+    <a href="{{ url_for('index') }}">หน้าหลัก</a>
+    {% endif %}
+    <hr>
+    <a href="{{ url_for('transfer') }}">Address App</a>
+    <hr>
+    <h3 style="text-align: center;">ตรวจสอบ {{info['totalcheked'] }} /{{info['totalfile']}}</h3>
+    <hr>
+    <h4 style="text-align: center;" onclick="openForm()">ฐานคำผิดบ่อย {{info['totalcmissthai']}}</h4>
+    <hr>
+    <!-- <form action="/idcard" method="POST">
+      <input type="text" name="search" id="search" placeholder="ค้นหาบัตรประชาชน."
+        style="position: relative;  width: 150px; position: fixed;margin-left: 10px;">
+      <button type="submit" style="position: relative;margin-left: 50px;">ค้นหา</button>
+    </form> -->
+    <input type="text" name="findid" id="findid" placeholder="ค้นหาบัตรประชาชน." title="Type a ID-CARD"
+      style="position: relative;  width: 150px; position: fixed;margin-left: 10px;">
+    <br> <br>
+    <!-- <a href="{{ url_for('findidcard') }}"> ค้นหา </a> -->
+    <button type="button" class="btn" onclick=findidcard() style="position: relative;margin-left: 50px;">ค้นหา</button>
 
-  <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-      <div class="navbar-header">
+    <!-- <button class="open-button" onclick="openForm()" >Open Form</button> -->
+    <div class="form-popup" id="misform" name="misform">
+      <form class="form-container" method="post" id="fmisform" name="fmisform">
+        <h1>เพิ่มคำผิดบ่อย</h1>
 
-      </div>
-      <ul class="nav navbar-nav ">
-        <li class="active"><a class="navbar-brand" href="{{ url_for('index') }}">หน้าหลัก</a></li>
+        <label for="email"><b>คำผิด </b></label>
+        <input type="text" id="misword" name="misword" required>
+        <br>
+        <br>
 
-        <li><a href="{{ url_for('page',page=0 ) }}">[ชุดแรก]</a></li>
-        {% if info['page'] <= 0 %} <li><a href="{{ url_for('page',page=info['page'] ) }}">ชุด {{info['page']+1}}</a>
-          </li>
-          <li><a href="{{ url_for('page',page=info['page']+1 ) }}">ชุด {{info['page']+2}}</a></li>
-          <li><a href="{{ url_for('page',page=info['page']+2 ) }}">ชุด {{info['page']+3}}</a></li>
-          <!-- <li><a href="{{ url_for('page',page=info['page']+3 ) }}">ชุด {{info['page']+4}}</a></li> -->
-          {% elif info['page'] >= info['listpage']-2 %} <li><a href="{{ url_for('page',page=info['listpage']-3 ) }}">ชุด
-              {{info['listpage']-2}}</a></li>
-          <li><a href="{{ url_for('page',page=info['listpage']-2 ) }}">ชุด {{info['listpage']-1}}</a></li>
-          <li><a href="{{ url_for('page',page=info['listpage']-1 ) }}">ชุด {{info['listpage']}}</a></li>
-          {% else %}
-          <li><a href="{{ url_for('page',page=info['page']-1 ) }}">ชุด {{info['page']}}</a></li>
-          <li><a href="{{ url_for('page',page=info['page'] ) }}">ชุด {{info['page']+1}}</a>
-          </li>
-          <li><a href="{{ url_for('page',page=info['page']+1 ) }}">ชุด {{info['page']+2}}</a></li>
-          <!-- <li><a href="{{ url_for('page',page=info['page']+2 ) }}">ชุด {{info['page']+3}}</a></li> -->
+        <label for="psw"><b>คำแก้ไข </b></label>
+        <input type="text" id="rghword" name="rghword" required>
+        <br>
+        <br>
 
-          {% endif %}
-          <li><a href="{{ url_for('page',page=info['listpage']-1  ) }}">[ชุดสุดท้าย]</a></li>
-          <li></li>
-          <li></li>
-          <li></li>
+        <button type="button" class="btn" onclick="addmissword()">เพิ่มคำผิดบ่อย</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
 
+        <!-- <label for="email"><b>คำผิด </b></label>
+        <input type="text" id="misword" name="misword" required>
+        <br>
 
-          {% if ocrdata %}
-          <li><a href="#" style="color:rgb(141, 246, 239) ;font-size: large;"> //-- กำลังตรวจชุดไฟล์ที่ (
-              {{info['page']+1}} )
-              --// </a>
-          </li>
-          {% endif %}
+        <label for="psw"><b>คำแก้ไข </b></label>
+        <input type="text" id="rghword" name="rghword" required>
 
+        <button type="button" class="btn" onclick="addmissword()">เพิ่มคำผิดบ่อย</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button> -->
 
-          <li><a href="#">ตรวจสอบแล้ว {{info['totalcheked'] }} /{{info['totalfile']}} </a></li>
-          <li style="position:relative ;left: 1000px;"><a href="{{ url_for('transfer') }}">..</a></li>
-      </ul>
+      </form>
     </div>
-  </nav>
 
+    <hr>
+    {% for page in range(listpage) %}
+    <a href="{{ url_for('page',page=page ) }}"> ชุดไฟล์ที่ {{ page +1 }} </a>
+    {% endfor %}
+  </div>
 
-  <!-- container-fluid -->
-  <div class="container-fluid" style=" flex-wrap: wrap;justify-content: center ; display: flex;">
-    <!-- <div class="container" style=" flex-wrap: wrap;justify-content: center ; display: flex;"> -->
+  {% if ocrdata %}
+  <h1 style="text-align: center;">ชุดงานที่ {{ page+1}}</h1>
+  {% endif %}
+
+  <div class="container" style=" flex-wrap: wrap;justify-content: center ; display: flex;">
 
 
     {% for cn in ocrdata %}
@@ -83,11 +96,9 @@
     <div class="card" id="card{{ cn['index_of_lotfile']}}">
       <img src="{{ cn['filedesinat'] }}" srcset="">
       <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
-        <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ = {{
-          cn['accu_name'] }}</h2>
 
         <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
-        <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
+        <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}">
         <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
           style="left: 363px;top: 120px;font-size: 22px;  ">
 
@@ -146,8 +157,8 @@
           {% endif %}
           <span class="slider round"></span>
         </label> <br>
-        <!-- <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
-          cn['accu_name'] }}</h3> -->
+        <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
+          cn['accu_name'] }}</h3>
 
       </form>
 
@@ -162,11 +173,9 @@
 
       <img src="{{ cn['filedesinat'] }}" srcset="">
       <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
-        <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ = {{
-          cn['accu_name'] }}</h2>
 
         <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
-        <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
+        <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}">
         <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
           style="left: 363px;top: 120px;font-size: 22px;  ">
 
@@ -225,8 +234,8 @@
           {% endif %}
           <span class="slider round"></span>
         </label> <br>
-        <!-- <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
-          cn['accu_name'] }}</h3> -->
+        <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
+          cn['accu_name'] }}</h3>
 
       </form>
 
@@ -238,11 +247,9 @@
 
       <img src="{{ cn['filedesinat'] }}" srcset="">
       <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
-        <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ = {{
-          cn['accu_name'] }}</h2>
 
         <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
-        <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
+        <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}">
         <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
           style="left: 363px;top: 120px;font-size: 22px;  ">
 
@@ -301,8 +308,8 @@
           {% endif %}
           <span class="slider round"></span>
         </label> <br>
-        <!-- <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
-          cn['accu_name'] }}</h3> -->
+        <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
+          cn['accu_name'] }}</h3>
 
       </form>
 
@@ -316,11 +323,9 @@
 
       <img src="{{ cn['filedesinat'] }}" srcset="">
       <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
-        <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ = {{
-          cn['accu_name'] }}</h2>
 
         <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
-        <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
+        <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}">
         <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
           style="left: 363px;top: 120px;font-size: 22px;  ">
 
@@ -379,21 +384,18 @@
           {% endif %}
           <span class="slider round"></span>
         </label> <br>
-        <!-- <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
-          cn['accu_name'] }}</h3> -->
+        <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
+          cn['accu_name'] }}</h3>
 
       </form>
   </div>
   {% else %} <div class="card-orange" id="card{{ cn['index_of_lotfile']}}">
-    <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} </h2>
-    <h2> ความแม่นยำชื่อ = {{
-      cn['accu_name'] }}</h2>
 
     <img src="{{ cn['filedesinat'] }}" srcset="">
     <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
 
       <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
-      <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
+      <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}">
       <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
         style="left: 363px;top: 120px;font-size: 22px;  ">
 
@@ -451,6 +453,8 @@
         {% endif %}
         <span class="slider round"></span>
       </label> <br>
+      <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
+        cn['accu_name'] }}</h3>
 
     </form>
 
@@ -462,6 +466,75 @@
 
   {% endif %}
 
+  <!-- <div class="card" id="card{{ cn['index_of_lotfile']}}">
+
+      <img src="{{ cn['filedesinat'] }}" srcset="">
+      <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
+
+        <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
+        <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}">
+        <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
+          style="left: 363px;top: 120px;font-size: 22px;  ">
+
+        <input type="text" id="fidname" name="Name" value="{{ cn['Name'] }}"
+          style="left: 230px;top: 168px;font-size: 20px;  ">
+        <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"
+          style="left: 850px;top: 205px;font-size: 20px;  ">
+        <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"
+          style="left: 1080px;top: 205px;font-size: 20px;   ">
+
+        <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"
+          style="left: 230px;top: 240px;font-size: 20px; ">
+        <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"
+          style="left: 1040px;top: 270px;font-size: 20px;  ">
+
+        <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}"
+          style="left: 230px;top: 315px;font-size: 20px; ">
+        <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}"
+          style="left: 508px;top: 315px;font-size: 16px;  ">
+        <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}"
+          style="left: 980px;top: 345px;font-size: 20px;  ">
+
+        <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"
+          style="left: 230px;top: 385px;font-size: 20px;    ">
+        <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"
+          style="left: 510px;top: 385px;font-size: 16px; ">
+        <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}"
+          style="left: 980px;top: 415px;font-size: 20px;   ">
+
+        <input type="text" id="faddr" name="address" value="{{ cn['address'] }}"
+          style="left: 250px;top: 555px;font-size: 20px;  background-color: whitesmoke;   ">
+        <label for="ftumbol"
+          style=" position: absolute;left: 230px;top: 589px;font-size: 20px; height:40px; ">ต.</label><br>
+        <input type="text" id="ftumbol" name="TUMBUL" value="{{ cn['TUMBUL'] }}"
+          style="left: 250px;top: 589px;font-size: 20px; background-color: whitesmoke;    ">
+        <label for="faumphur"
+          style=" position: absolute;left: 230px;top: 623px;font-size: 20px;  height:40px;">อ.</label><br>
+        <input type="text" id="faumphur" name="AUMPUR" value="{{ cn['AUMPUR'] }}"
+          style="left: 250px;top: 623px;font-size: 20px;background-color: whitesmoke;  ">
+        <label for="fprovince"
+          style=" position: absolute;left: 230px;top: 657px;font-size: 20px; height:40px; ">จ.</label><br>
+        <input type="text" id="fprovince" name="PROVINCE" value="{{ cn['PROVINCE'] }}"
+          style="left: 250px;top: 657px;font-size: 20px;background-color: whitesmoke;   ">
+        <input type="text" id="fzipcode" name="ZIPCODE" value="{{ cn['ZIPCODE'] }}"
+          style="left: 250px;top: 690px;font-size: 16px;background-color: whitesmoke;  ">
+
+        <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"
+          style="left: 360px;top: 800px;font-size: 20px; width: 70%;  ">
+
+
+        <label class="switch">
+          {% if cn['checked'] %}
+          <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox" checked>
+          {% else %}
+          <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox">
+          {% endif %}
+          <span class="slider round"></span>
+        </label> <br>
+
+      </form>
+
+    </div> -->
 
 
   {% endfor %}

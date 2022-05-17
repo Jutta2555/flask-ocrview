@@ -1,0 +1,44 @@
+// MongoDB Playground
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// The current database to use.
+use('addrocrtha');
+
+//Search for documents in the current collection.
+db.getCollection('civil_registration')
+  .find(
+    { "ocrlot":54 ,"dob": { $exists: true },
+    $expr: { $lt: [{ $strLenCP: '$dob' }, 3]}
+    
+          /*
+      * Filter
+      db.usercollection.find({ 
+    name: { $exists: true },
+    $expr: { $gt: [{ $strLenCP: '$name' }, 40] } 
+})
+      * fieldA: value or expression
+      */
+    },
+    {
+      /*
+      * Projection กันยายน 2527
+      * _id: 0, // exclude _id
+      * fieldA: 1 // include field
+      */
+    }
+  )
+  .sort({
+    /*
+    * fieldA: 1 // ascending
+    * fieldB: -1 // descending
+    */
+  });
+
+use('addrocrtha');
+db.getCollection('civil_registration').updateMany( 
+  { "ocrlot":54,"accu_address": 100,"accu_name": 100}
+  , {'$set': {"checked": 1}})
+
+use('addrocrtha');
+db.getCollection('civil_registration').count( 
+  { "ocrlot":54,"accu_address": 100,"accu_name": 100,"checked": 0})

@@ -1,11 +1,12 @@
 /* body { */
-  /* font-family: "Lato", sans-serif; */
+/* font-family: "Lato", sans-serif; */
 /* } */
 .container {
-margin-left: 350px;
-display: flex;
-flex-wrap: wrap;
+  margin-left: 50px;
+  display: flex;
+  flex-wrap: wrap;
 }
+
 .sidenav {
   height: 100%;
   width: 190px;
@@ -13,8 +14,8 @@ flex-wrap: wrap;
   z-index: 1;
   top: 0;
   left: 0;
-  background-color:rgb(231, 223, 223);
-   /* rgb(126, 126, 126); */
+  background-color: rgb(231, 223, 223);
+  /* rgb(126, 126, 126); */
   overflow-x: hidden;
   color: darkcyan;
   padding-top: 20px;
@@ -33,20 +34,28 @@ flex-wrap: wrap;
 }
 
 .main {
-  margin-left: 160px; /* Same as the width of the sidenav */
-  font-size: 28px; /* Increased text to enable scrolling */
+  margin-left: 160px;
+  /* Same as the width of the sidenav */
+  font-size: 28px;
+  /* Increased text to enable scrolling */
   padding: 0px 10px;
 }
 
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+  .sidenav {
+    padding-top: 15px;
+  }
+
+  .sidenav a {
+    font-size: 18px;
+  }
 }
 
 
 h1 {
   text-align: center;
 }
+
 h2 {
   text-align: center;
 }
@@ -56,10 +65,10 @@ input[type="text"] {
   position: absolute;
   height: 30px;
   width: 30%;
-  background-color: transparent;  
+  background-color: transparent;
   color: rgb(87, 167, 221);
   /* font-family: 'Sarabun', sans-serif; */
-/* 
+  /* 
 input[type="text"] {
   border: 1px;
   color:black; 
@@ -80,77 +89,95 @@ input[type="text"] {
   /* font-family: Verdana, Geneva, Tahoma, sans-serif; */
   /* font-family: 'Lucida Sans Unicode' ; */
 }
+
 /*, 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans',Arial, sans-serif*/
 .card-orange {
-border: #1eeb39 solid 0px;
-position: relative;
-margin: 0 15px 20px; 
-padding: 10px 50px;  
-width: 1400px; 
-justify-items: center;
-/* justify-items: left;    */
-box-shadow: 0 8px 26px -4px rgba(0,0,0,0.15); 
-border-radius: 10px;  background: var(--white); transition: box-shadow .15s ease; 
-background-color: #eebf88;
+  border: #1eeb39 solid 0px;
+  position: relative;
+  margin: 0 15px 20px;
+  padding: 10px 50px;
+  width: 1400px;
+  justify-items: center;
+  /* justify-items: left;    */
+  box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  background: var(--white);
+  transition: box-shadow .15s ease;
+  background-color: #eebf88;
 }
 
 .card-yellow {
-border: #1eeb39 solid 0px;
-position: relative;
-margin: 0 15px 20px; 
-padding: 10px 50px;  
-width: 1400px; 
-justify-items: center;
-/* justify-items: left;    */
-box-shadow: 0 8px 26px -4px rgba(0,0,0,0.15); 
-border-radius: 10px;  background: var(--white); transition: box-shadow .15s ease; 
-background-color: #d9db64;
+  border: #1eeb39 solid 0px;
+  position: relative;
+  margin: 0 15px 20px;
+  padding: 10px 50px;
+  width: 1400px;
+  justify-items: center;
+  /* justify-items: left;    */
+  box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  background: var(--white);
+  transition: box-shadow .15s ease;
+  background-color: #d9db64;
 }
 
 .card-blue {
-border: #1eeb39 solid 0px;
-position: relative;
-margin: 0 15px 20px; 
-padding: 10px 50px;  
-width: 1400px; 
-justify-items: center;
-/* justify-items: left;    */
-box-shadow: 0 8px 26px -4px rgba(0,0,0,0.15); 
-border-radius: 10px;  background: var(--white); transition: box-shadow .15s ease; 
-background-color: #bdd8ee;
+  border: #1eeb39 solid 0px;
+  position: relative;
+  margin: 0 15px 20px;
+  padding: 10px 50px;
+  width: 1400px;
+  justify-items: center;
+  /* justify-items: left;    */
+  box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  background: var(--white);
+  transition: box-shadow .15s ease;
+  background-color: #bdd8ee;
 }
 
 
 .card {
-border: #1eeb39 solid 0px;
-position: relative;
-margin: 0 15px 20px; 
-padding: 10px 50px;  
-width: 1400px; 
-justify-items: center;
-/* justify-items: left;    */
-box-shadow: 0 8px 26px -4px rgba(0,0,0,0.15); 
-border-radius: 10px;  background: var(--white); transition: box-shadow .15s ease; 
-background-color: #ecf1f5;
+  border: #1eeb39 solid 0px;
+  position: relative;
+  margin: 0 15px 20px;
+  padding: 10px 50px;
+  width: 1400px;
+  justify-items: center;
+  /* justify-items: left;    */
+  box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+  background: var(--white);
+  transition: box-shadow .15s ease;
+  background-color: #d0f6ef;
 }
+
 img {
-border: #1e5feb solid 0px;
-transform: scale(1); 
-/* left: 50px;
+  border: #1e5feb solid 0px;
+  transform: scale(1);
+  /* left: 50px;
 right: 100px;  */
-/* top: 0;
+  /* top: 0;
 padding: 0px 0px; 
 margin: 0px 0px ;  */
-width: 1300px;
-border-radius: 5px 5px 0 0;  
-opacity: 0.6;
+  width: 1300px;
+  border-radius: 5px 5px 0 0;
+  opacity: 0.6;
 
 }
+
 h3:hover+.tooltip {
-display: block;
+  display: block;
 }
-.tooltip { display: none; }
-button:hover+.tooltip { display: block; }
+
+.tooltip {
+  display: none;
+}
+
+button:hover+.tooltip {
+  display: block;
+}
+
 /* transform: scale(1);   height: 508px; width: 921px;width: 100%; The switch - the box around the slider   width: 961px;  height: 808px; */
 /*  */
 
@@ -163,17 +190,17 @@ button:hover+.tooltip { display: block; }
   margin-left: 20px;
   margin-bottom: 15px;
   /* bottom: 850px; */
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
+}
+
+/* Hide default HTML checkbox */
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
-  }
-  
-  /* The slider */
-  .slider {
+}
+
+/* The slider */
+.slider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -183,9 +210,9 @@ button:hover+.tooltip { display: block; }
   background-color: #ccc;
   -webkit-transition: .1s;
   transition: .1s;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
   position: absolute;
   content: "";
   height: 26px;
@@ -195,107 +222,112 @@ button:hover+.tooltip { display: block; }
   background-color: white;
   -webkit-transition: .1s;
   transition: .1s;
-  }
-  
-  input:checked + .slider {
+}
+
+input:checked+.slider {
   background-color: #2196F3;
-  
-  }
-  
-  input:focus + .slider {
+
+}
+
+input:focus+.slider {
   box-shadow: 0 0 1px #2196F3;
-  }
-  input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
-    outline-width: 5px;
-    outline-style: solid;
-    /* outline-style: dashed; */
-    outline-color: rgb(100, 208, 235);
-  }
-  input:checked + .slider:before {
+}
+
+input:focus+.slider {
+  box-shadow: 0 0 1px #2196F3;
+  outline-width: 5px;
+  outline-style: solid;
+  /* outline-style: dashed; */
+  outline-color: rgb(100, 208, 235);
+}
+
+input:checked+.slider:before {
   -webkit-transform: translateX(100px);
   -ms-transform: translateX(50px);
   transform: translateX(46px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
+}
+
+/* Rounded sliders */
+.slider.round {
   border-radius: 34px;
-  }
-  
-  .slider.round:before {
+}
+
+.slider.round:before {
   border-radius: 50%;
-  }
-  
+}
+
 /*  จัดข้อความยายตาม ตัวอักษร*/
-  #relative-parent {
-    position: relative;
-    min-width: 1em;
-    width: min-content;
-  }
+#relative-parent {
+  position: relative;
+  min-width: 1em;
+  width: min-content;
+}
 
-  #size-calibration {
-    visibility: hidden;
-    /* Prevent the span from wrapping the text when input value has multiple words, or collapsing multiple spaces into one */
-    white-space: pre;
-  }
+#size-calibration {
+  visibility: hidden;
+  /* Prevent the span from wrapping the text when input value has multiple words, or collapsing multiple spaces into one */
+  white-space: pre;
+}
 
-  #autosized-input {
-    position: absolute;
-    left: 0;
-    width: 100%;
-  }
-  
-  #size-calibration, #autosized-input {
-    /* Normalize styles that the browser sets differently between spans and inputs. 
+#autosized-input {
+  position: absolute;
+  left: 0;
+  width: 100%;
+}
+
+#size-calibration,
+#autosized-input {
+  /* Normalize styles that the browser sets differently between spans and inputs. 
     Ideally, use a "CSS reset" here. */
-    font-family: "Arial";
-    padding: 0;
-    /* Demonstrate that this works for input with custom styles */
-    font-size: 24px;
-  }
+  font-family: "Arial";
+  padding: 0;
+  /* Demonstrate that this works for input with custom styles */
+  font-size: 24px;
+}
 
 
-  .tooltip {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-  }
-  
-  .tooltip .tooltiptext {
-    visibility: hidden;
-    width: 800px;
-    background-color: #555;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -60px;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  
-  .tooltip .tooltiptext::after {
-    content: "";
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #555 transparent transparent transparent;
-  }
-  
-  .tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
-  }
-  
-  * {box-sizing: border-box;}
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 800px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
+* {
+  box-sizing: border-box;
+}
 
 
 /* Button used to open the contact form - fixed at the bottom of the page */
@@ -330,23 +362,25 @@ button:hover+.tooltip { display: block; }
 }
 
 /* Full-width input fields */
-.form-container input[type=text],.form-container input[type=password]  {
+.form-container input[type=text],
+.form-container input[type=password] {
   width: 60%;
   right: 8px;
   background: #f1f1f1;
   margin-top: -5px;
   /* padding-bottom: 5px; */
-  
+
 }
 
 
 /* When the inputs get focus, do something */
-.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+.form-container input[type=text]:focus,
+.form-container input[type=password]:focus {
   background-color: #ddd;
   outline: none;
   /* margin-top: 10px; */
   /* padding-bottom: 1px; */
- 
+
 }
 
 /* Set a style for the submit/login button */
@@ -368,6 +402,24 @@ button:hover+.tooltip { display: block; }
 }
 
 /* Add some hover effects to buttons */
-.form-container .btn:hover, .open-button:hover {
+.form-container .btn:hover,
+.open-button:hover {
   opacity: 1;
+}
+
+.pagination-page-info {
+  padding: .6em;
+  padding-left: 0;
+  width: 40em;
+  margin: .5em;
+  margin-left: 0;
+  font-size: 12px;
+}
+
+.pagination-page-info b {
+  color: black;
+  background: #6aa6ed;
+  padding-left: 2px;
+  padding: .1em .25em;
+  font-size: 150%;
 }

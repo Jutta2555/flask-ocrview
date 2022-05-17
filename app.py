@@ -17,9 +17,9 @@ mongo = PyMongo(app)  # addrocrtha.personscan4
 # conllection = mongo.db.personscan5 civil_registration
 conllection = mongo.db.civil_registration
 fileperpage = 10
-ocrlot = 0
+ocrlot = 56
 info = dict()
-version = 0.2
+version = 0.1
 conn, cursor = None, None
 
 #  INSERT ONE STLDATA DICT FORMAT
@@ -30,8 +30,8 @@ def fnc_thatocmsdate(str_date=None):
         return "NULL"
     else:
         if len(str_date.split()) == 3:
-            d = str_date.split()[0]
-            m = str_date.split()[1]
+            d = str_date.split()[0] if int(str_date.split()[0]) < 31 else '1'
+            m = str_date.split()[1]  # if str_date.split()[1].isalpha() else 1
             y = int(str_date.split()[2])-543
         elif len(str_date.split()) == 2:
             d = 1
@@ -59,6 +59,20 @@ def finddocumentcmissthai(stldata):
 #  INSERT ONE STLDATA DICT FORMAT
 
 
+def get_zipcode(doc):
+    finddict = dict()
+    finddict['PROVINCE'] = doc['PROVINCE']
+    finddict['TUMBUL'] = doc['TUMBUL']
+    finddict['AUMPUR'] = doc['AUMPUR']
+    # PROVINCE:"กระบี่"AUMPUR:"เกาะลันตา"TUMBUL:"เกาะกลาง"ZIPCODE:81120addrocrtha.loctha
+    try:
+        x = mongo.db.loctha.find_one(finddict)
+        return x['ZIPCODE']
+    except OperationFailure as e:
+        print(f"couldn't execute insert_many mylist.\n error as  {str(e)}")
+    return None
+
+
 def Insertmissword(stldata):
     import datetime
     try:
@@ -74,7 +88,9 @@ def index():
     global info
     global ocrlot
     #  FIND  LAST ocrlot  TO FIND ocrlot DISPLAY
+    #  DEBUG TEST  56
     ocrlot = mongo.db.counters.find_one({'_id': 'lotocr'})['seq_value']
+
     conllection = mongo.db.civil_registration
     totalcheked = conllection.count_documents({"ocrlot": ocrlot, "checked": 1})
     totalcmissthai = mongo.db.cmissthai.count_documents({})
@@ -82,9 +98,11 @@ def index():
     listpage = (totalfile//fileperpage)
     if totalfile % fileperpage > 0:
         listpage += 1
-    info = {'totalcheked': totalcheked, 'totalcmissthai': totalcmissthai, 'conllection': 'civil_regis',
-            'totalfile': totalfile, 'listpage': listpage, "ocrlot": ocrlot, "version": version}
     page = 0
+    print('ocrlot ', ocrlot)
+
+    info = {'totalcheked': totalcheked, 'totalcmissthai': totalcmissthai, 'conllection': 'civil_regis',
+            'totalfile': totalfile, 'listpage': listpage, "ocrlot": ocrlot, "version": version, "page": page}
     return render_template('base.html', ocrdata=[], listpage=listpage, info=info, totalcheked=totalcheked, totalfile=totalfile)
 
 
@@ -161,10 +179,20 @@ def page(page):
     info['totalcheked'] = totalcheked
     listpage = info['listpage']
     totalfile = info['totalfile']
+    info["page"] = page
 
     #  FIND  DATA TO DICT FOR  DISPLAY
+    # sortlist =
+    # ocrdata = conllection.find({"ocrlot": ocrlot}).limit(
+    #     fileperpage).skip(skipfile).sort({'accu_address', 1, '_id', 1}) "accu_address": 1,
+    sortDic = {"accu_address": 1}  # ["index_of_lotfile", 1]
+
     ocrdata = conllection.find({"ocrlot": ocrlot}).limit(
-        fileperpage).skip(skipfile).sort('accu_address', 1)
+        fileperpage).skip(skipfile).sort("index_of_lotfile", 1)
+
+    # ocrdata = conllection.find({"ocrlot": ocrlot}).limit(
+    #     fileperpage).skip(skipfile).sort('accu_address', 1)
+
     # for d in ocrdata:
     #     d['ZIPCODE'] = str(int((d['ZIPCODE']))
     #                        ) if d['ZIPCODE'] is not None else ''
@@ -190,11 +218,17 @@ def toggleUpdate():
     myquery = {'index_of_lotfile': int(
         dumdict['index_of_lotfile']), 'ocrlot': ocrlot}
     dumdict = dict(request.form)
+    print(' index_of_lotfile ', str(
+        dumdict['index_of_lotfile']), ' Check =', str(dumdict['checked']))
     if dumdict['checked'] == '1':
         conllection.update_one(myquery, {'$set': {'checked': 0}})
+        print('index_of_lotfile', str(
+            dumdict['index_of_lotfile']), '=====> Unchecked')
         return json.dumps('Cancle')
 
     dumdict['checked'] = 1
+    print('index_of_lotfile', str(
+        dumdict['index_of_lotfile']), '=====> Checked')
     dumdict.pop('index_of_lotfile')
     newvalues = {"$set": dumdict}
     conllection.update_one(myquery, newvalues)
@@ -202,7 +236,7 @@ def toggleUpdate():
 
 
 #  MONGO TO SQL
-@app.route('/mongo2sql', methods=['POST'])
+@ app.route('/mongo2sql', methods=['POST'])
 def mongo2sql():
     global conn
     global cursor
@@ -212,7 +246,10 @@ def mongo2sql():
         info['transfer'] = 0
         return render_template('transfer.html', info=info)
 
-    myquery = {'ocrlot': int(dumdict['ocrlot']), 'checked': 1}
+    myquery = {'ocrlot': int(dumdict['ocrlot']),
+               'checked': 1}
+    # myquery = {'ocrlot': int(dumdict['ocrlot']),
+    #            'checked': 1, 'loaddate': None}
     #  FIND  DATA TO DICT FOR  DISPLAY
     conllection = mongo.db.civil_registration
     ocrdata = conllection.find(myquery)
@@ -222,8 +259,14 @@ def mongo2sql():
     ucount = 0
     for doc in ocrdata:
         print('index_of_lotfile', doc['index_of_lotfile'], doc['idcard'])
+        # print(doc)
+        if doc['index_of_lotfile'] == 111:
+            print('index_of_lotfile', doc['index_of_lotfile'], doc['idcard'])
         doc['id_card'] = doc['idcard'].replace('-', '')
         doc['status'] = 1 if doc['status'] == 'เจ้าบ้าน' else 0
+        if doc['notes'] == None:
+            doc['notes'] = "NULL"
+
         if 'บ้านกลาง' in doc['notes']:
             doc['status'] = 2
         elif 'ตาย' in doc['notes']:
@@ -248,8 +291,22 @@ def mongo2sql():
         strVauel.append(" address ='" + str(doc['address']) + "'")
         strVauel.append(" province = '" + doc['PROVINCE'] + "'")
         strVauel.append(" amphur = '" + doc['mixAddr'] + "'")
-        strVauel.append(
-            " zip_code = " + ("'" + str(doc['ZIPCODE']) + "'" if doc['ZIPCODE'] != "" else "NULL") + "")
+
+        if doc['ZIPCODE'] == 'None' or doc['ZIPCODE'] == '':
+            if 'ทะเบียนบ้าน' in doc['address']:
+                doc['ZIPCODE'] = 'None'
+            else:
+                doc['ZIPCODE'] = str(get_zipcode(doc))
+
+            if doc['ZIPCODE'] != None and doc['ZIPCODE'] != 'None':
+                strVauel.append(
+                    "zip_code  = '" + str(doc['ZIPCODE'].replace('.0', '')) + "'")  # ตัด .0 ออก
+            else:
+                strVauel.append(" zip_code  = NULL ")
+        else:
+            strVauel.append(
+                " zip_code = " + ("'" + str(doc['ZIPCODE']) + "'" if doc['ZIPCODE'] != "" else "NULL") + "")
+
         strVauel.append(" date_of_birth = " + doc['dob'] + " ")
         strVauel.append(" note_own = " + doc['notes'] + " ")
         strVauel.append(" father = '" + str(doc['father']) + "' ")
@@ -268,11 +325,12 @@ def mongo2sql():
         SQLstr = SQLstr + ",".join(strVauel) + " WHERE " + strWhere + " "
 
         try:
+            print(SQLstr)
             cursor.execute(SQLstr)
             lcount += (1 if cursor.rowcount == 1 else 0)
             ucount += (1 if cursor.rowcount == 0 else 0)
             if cursor.rowcount == 1:
-                myquery = {'idcard': doc['idcard']}
+                myquery = {'_id': doc['_id']}
                 newvalues = {"$set": {'loaddate': datetime.datetime.utcnow()}}
                 try:
                     print(mongo.db.civil_registration.update_one(
@@ -284,7 +342,6 @@ def mongo2sql():
             ucount += (1 if cursor.rowcount == 0 else 0)
 
     conn.commit()
-    # mongo.db.civil_registration.comit()
     # cursor.execute(
     #     'SELECT count(*) FROM address.dbo.[data] WHERE convert(varchar(8),input_date,112)=%s', (datetime.datetime.now()).strftime('%Y%m%d'))
     # row = cursor.fetchone()
@@ -297,7 +354,7 @@ def mongo2sql():
     # return json.dumps('Update')
 
 
-@app.route('/transfer')
+@ app.route('/transfer')
 def transfer():
     global conn
     global cursor
@@ -327,4 +384,4 @@ def transfer():
 # if __name__ == '__main__':
 #     app.run(debug=True)
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=False)
+    app.run(host='0.0.0.0', debug=False, port=3000)

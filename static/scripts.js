@@ -56,18 +56,21 @@ function mytransfer(id) {
 }
 
 function mycheck(id) {
+  var el_up = document.getElementById("checked" + id).value;
   dataform = $("#form" + id).serialize();// JSON.stringify($("#form"+id).serializeArray());
+  console.log(id + "  Status" + el_up + " ee  " + document.getElementById("checked" + id).value);
   $.ajax({
     url: '/toggleUpdate',
     data: dataform, //$('form').serialize(),
     type: 'POST',
     success: function (response) {
       if (response == '"Cancle"') {
-        document.getElementById("checked").value = 0;
-        console.log("cancle");
+        dataform
+        document.getElementById("checked" + id).value = 0;
+        console.log(id + "  cancle" + "   " + response + document.getElementById("checked" + id).value);
       } else {
-        document.getElementById("checked").value = 1;
-        console.log("Good ");
+        document.getElementById("checked" + id).value = 1;
+        console.log(id + "  Good " + "   " + response) + document.getElementById("checked" + id).value;
       }
     },
     error: function (error) {

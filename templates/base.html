@@ -15,73 +15,139 @@
 
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
   <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <!-- เวอร์ชั่นสคริป ที่ใช้งาน ดรอบลิส 3.6.0 -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
   <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 
 </head>
 
 <body>
 
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar  navbar-fixed-top" style="background-color: #f5f5f5;">
+    <!--  navbar-inverse-->
     <div class="container-fluid">
-      <div class="navbar-header">
-
-      </div>
-      <ul class="nav navbar-nav ">
+      <!-- <div class="navbar-header">
         <li class="active"><a class="navbar-brand" href="{{ url_for('index') }}">หน้าหลัก</a></li>
+      </div> -->
+      <ul class="nav navbar-nav ">
+        <li class="active"><a class="navbar-brand" href="{{ url_for('index') }}"><i
+              class="fa fa-fw fa-home"></i>หน้าหลัก (SET - {{session.ocrlot}})</a>
+        </li>
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select SET<span
+              class="caret"></span></a>
+          <ul class="dropdown-menu">
+            {% for setocr in info['ocrs'] %}
+            <li><a href="{{ url_for('setocr',setocr=setocr['_id'] ) }}"><i class="fa fa-book fa-fw"></i> SET-SCAN
+                {{setocr['_id']
+                }}..({{setocr['ocrdocs'] }})</a></li>
+            <!-- setocr/<int:setocr>') -->
+            {% endfor %}
 
-        <li><a href="{{ url_for('page',page=0 ) }}">[ชุดแรก]</a></li>
-        {% if info['page'] <= 0 %} <li><a href="{{ url_for('page',page=info['page'] ) }}">ชุด {{info['page']+1}}</a>
+          </ul>
+        </li>
+
+
+        <li>
+          <a href="{{ url_for('page',page=0 ) }}">[ชุดแรก]</a>
+        </li>
+        {% if session.page <= 0 %} {% if ocrdata %} <li class="active"><a
+            href="{{ url_for('page',page=session.page ) }}" style="color:rgb(162, 0, 100) ;">
+            <i class="fa fa-pencil fa-fw"></i>ชุด (
+            {{session.page+1}} )
+          </a>
           </li>
-          <li><a href="{{ url_for('page',page=info['page']+1 ) }}">ชุด {{info['page']+2}}</a></li>
-          <li><a href="{{ url_for('page',page=info['page']+2 ) }}">ชุด {{info['page']+3}}</a></li>
-          <!-- <li><a href="{{ url_for('page',page=info['page']+3 ) }}">ชุด {{info['page']+4}}</a></li> -->
-          {% elif info['page'] >= info['listpage']-2 %} <li><a href="{{ url_for('page',page=info['listpage']-3 ) }}">ชุด
-              {{info['listpage']-2}}</a></li>
-          <li><a href="{{ url_for('page',page=info['listpage']-2 ) }}">ชุด {{info['listpage']-1}}</a></li>
-          <li><a href="{{ url_for('page',page=info['listpage']-1 ) }}">ชุด {{info['listpage']}}</a></li>
           {% else %}
-          <li><a href="{{ url_for('page',page=info['page']-1 ) }}">ชุด {{info['page']}}</a></li>
-          <li><a href="{{ url_for('page',page=info['page'] ) }}">ชุด {{info['page']+1}}</a>
+          <li><a href="{{ url_for('page',page=session.page ) }}">ชุด {{session.page+1}}</a>
           </li>
-          <li><a href="{{ url_for('page',page=info['page']+1 ) }}">ชุด {{info['page']+2}}</a></li>
-          <!-- <li><a href="{{ url_for('page',page=info['page']+2 ) }}">ชุด {{info['page']+3}}</a></li> -->
-
           {% endif %}
-          <li><a href="{{ url_for('page',page=info['listpage']-1  ) }}">[ชุดสุดท้าย]</a></li>
-          <li></li>
-          <li></li>
-          <li></li>
 
+          <li><a href="{{ url_for('page',page=session.page+1 ) }}">ชุด {{session.page+2}}</a></li>
+          <li><a href="{{ url_for('page',page=session.page+2 ) }}">ชุด {{session.page+3}}</a></li>
+          <!-- <li><a href="{{ url_for('page',page=session.page+3 ) }}">ชุด {{session.page+4}}</a></li> -->
+          {% elif session.page >= session.listpage-1 %}
+          <li><a href="{{ url_for('page',page=session.listpage-3 ) }}">ชุด{{session.listpage-2}}</a></li>
+          <li><a href="{{ url_for('page',page=session.listpage-2 ) }}">ชุด {{session.listpage-1}}</a></li>
+          <!-- <li><a href="{{ url_for('page',page=session.listpage-1 ) }}">ชุด {{session.listpage}}</a></li> -->
+          {% if ocrdata %}
+          <li class="active"><a href="{{ url_for('page',page=session.page ) }}" style="color:rgb(162, 0, 100) ;">
+              <i class="fa fa-pencil fa-fw"></i>ชุด (
+              {{session.page+1}} )
+            </a>
+          </li>
+          {% else %}
+          <li><a href="{{ url_for('page',page=session.page ) }}">ชุด {{session.page+1}}</a>
+          </li>
+          {% endif %}
+
+          {% else %}
+          <li><a href="{{ url_for('page',page=session.page-1 ) }}">ชุด {{session.page}}</a></li>
 
           {% if ocrdata %}
-          <li><a href="#" style="color:rgb(141, 246, 239) ;font-size: large;"> //-- กำลังตรวจชุดไฟล์ที่ (
-              {{info['page']+1}} )
-              --// </a>
+          <li class="active"><a href="{{ url_for('page',page=session.page ) }}" style="color:rgb(162, 0, 100) ;">
+              <i class="fa fa-pencil fa-fw"></i>ชุด (
+              {{session.page+1}} )
+            </a>
+          </li>
+          {% else %}
+          <li><a href="{{ url_for('page',page=session.page ) }}">ชุด {{session.page+1}}</a>
           </li>
           {% endif %}
 
+          <li><a href="{{ url_for('page',page=session.page+1 ) }}">ชุด {{session.page+2}}</a></li>
+          <!-- <li><a href="{{ url_for('page',page=session.page+2 ) }}">ชุด {{session.page+3}}</a></li> -->
 
-          <li><a href="#">ตรวจสอบแล้ว {{info['totalcheked'] }} /{{info['totalfile']}} </a></li>
-          <li style="position:relative ;left: 1000px;"><a href="{{ url_for('transfer') }}">..</a></li>
+          {% endif %}
+          <li><a href="{{ url_for('page',page=session.listpage-1  ) }}">[ชุดสุดท้าย]</a></li>
+          <li class="active"><a href="#" style="color:rgb(162, 0, 100) ;"><i
+                class="fa fa-pencil fa-fw"></i>{{session.totalcheked
+              }} /
+              {{session.totalfile}} </a></li>
+
       </ul>
+      <form class="navbar-form navbar-left">
+        <!-- <div class="form-group"> -->
+        <input type="text" name="findid" id="findid" class="form-control" placeholder="ค้นหาบัตรประชาชน">
+        <!-- </div> -->
+        <button type="submit" onclick=findidcard() class="btn btn-default" style="margin-left: 220px;"><i
+            class="fa fa-fw fa-search"></i>ค้นหา</button>
+      </form>
+
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active">
+          <img src="{{ session.picture }}" style="height:50px ;width:50px ;">
+          <!-- class="mx-auto d-block" class="rounded-circle active"-->
+        </li>
+
+        <li class="active"><a href="#"><i class="fa fa-fw fa-user"></i>{{
+            session.name_sur }}</a></li>
+
+        <li><a href="{{ url_for('logout') }}"><i class="fa fa-fw fa-sign-out"></i>ออกจากระบบ</a></li>
+
+        <li class="active"><a href="{{ url_for('transfer') }}">..</a></li>
+      </ul>
+
     </div>
   </nav>
 
 
   <!-- container-fluid -->
-  <div class="container-fluid" style=" flex-wrap: wrap;justify-content: center ; display: flex;">
-    <!-- <div class="container" style=" flex-wrap: wrap;justify-content: center ; display: flex;"> -->
-
+  <div class="container-fluid" style=" flex-wrap: wrap;display: flex;justify-content: center; margin-top:80px ;">
+    <!-- <div class=" container" style=" flex-wrap: wrap;justify-content: center ; display: flex;"> -->
 
     {% for cn in ocrdata %}
 
     {% if cn['accu_address'] ==100 and cn['accu_name']==100 %}
     <div class="card" id="card{{ cn['index_of_lotfile']}}">
-      <img src="{{ cn['filedesinat'] }}" srcset="">
+      <img src="{{ cn['filedesinat'] }}" srcset="" style="opacity: 0.4;">
       <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
         <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ = {{
           cn['accu_name'] }}</h2>
@@ -160,7 +226,7 @@
     {% elif cn['accu_address'] ==100 and cn['accu_name']==90 %}
     <div class="card-blue" id="card{{ cn['index_of_lotfile']}}">
 
-      <img src="{{ cn['filedesinat'] }}" srcset="">
+      <img src="{{ cn['filedesinat'] }}" srcset="" style="opacity: 0.4;">
       <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
         <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ = {{
           cn['accu_name'] }}</h2>
@@ -236,7 +302,7 @@
     {% elif cn['accu_address'] ==50 and cn['accu_name']>= 90 %}
     <div class="card-yellow" id="card{{ cn['index_of_lotfile']}}">
 
-      <img src="{{ cn['filedesinat'] }}" srcset="">
+      <img src="{{ cn['filedesinat'] }}" srcset="" style="opacity: 0.4;">
       <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
         <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ = {{
           cn['accu_name'] }}</h2>
@@ -314,7 +380,7 @@
     {% elif cn['accu_address'] <= 100 and cn['accu_name']<=100 %} <div class="card-orange"
       id="card{{ cn['index_of_lotfile']}}">
 
-      <img src="{{ cn['filedesinat'] }}" srcset="">
+      <img src="{{ cn['filedesinat'] }}" srcset="" style="opacity: 0.4;">
       <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
         <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ = {{
           cn['accu_name'] }}</h2>
@@ -389,7 +455,7 @@
     <h2> ความแม่นยำชื่อ = {{
       cn['accu_name'] }}</h2>
 
-    <img src="{{ cn['filedesinat'] }}" srcset="">
+    <img src="{{ cn['filedesinat'] }}" srcset="" style="opacity: 0.4;">
     <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
 
       <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">

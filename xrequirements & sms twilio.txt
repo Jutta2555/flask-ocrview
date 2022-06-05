@@ -1,0 +1,23 @@
+click==8.0.3
+Flask==2.0.2
+Flask-PyMongo==2.3.0
+itsdangerous==2.0.1
+Jinja2==3.0.3
+MarkupSafe==2.0.1
+pymongo==3.12.1
+Werkzeug==2.0.2
+# pymssql==2.1.4
+
+
+------------------SMS  WITH TWILIO------------------
+curl -X POST https://api.twilio.com/2010-04-01/Accounts/ACa7499b15ba4968cb548d8205b6038a2f/Messages.json \
+                --data-urlencode "Body=Hello from Twilio" \
+                --data-urlencode "From=+19125518330" \
+                --data-urlencode "To=+66813581828" \
+                -u ACa7499b15ba4968cb548d8205b6038a2f:28acd2b273db970548bce4d3be0165e8
+
+curl -X POST https://api.twilio.com/2010-04-01/Accounts/ACa7499b15ba4968cb548d8205b6038a2f/Messages.json \
+                --data-urlencode "Body=หนี้สินมีทางออก KK กดเพิ่มเพื่อนที่ Link https://lin.ee/D1O5JX4  ติดต่อ 02-1369115 ต่อ 401 K.tom" \
+                --data-urlencode "From=+19125518330" \
+                --data-urlencode "To=+66813581828" \
+                -u ACa7499b15ba4968cb548d8205b6038a2f:28acd2b273db970548bce4d3be0165e8                

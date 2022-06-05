@@ -1,28 +1,202 @@
 import datetime
-from gettext import find
 import json
+import logging
+import logging.config
+import os
+from datetime import date
+from gettext import find
+from pathlib import Path
 from webbrowser import get
+# from twilio.rest import Client
 
 import pymssql
 from flask import (Flask, flash, jsonify, redirect, render_template, request,
-                   url_for)
+                   session, url_for)
 from flask_pymongo import PyMongo
 from pymongo.errors import ConnectionFailure, OperationFailure
+
+from flask_session import Session
+
+# logging.config.fileConfig('logging.conf')
+
+# create logger
+# logger = logging.getLogger('simpleExample')TWILIO_ACCOUNT_SID
+# account_sid = os.environ['TWILIO_ACCOUNT_SID']
+# auth_token = os.environ['TWILIO_AUTH_TOKEN']
+# client = Client(account_sid, auth_token)
+
+# message = client.messages \
+#                 .create(
+#                     body="หนี้สินมีทางออก KK กดเพิ่มเพื่อนที่ Link https://lin.ee/D1O5JX4 ",
+#                     from_='+19125518330',
+#                     to='+66813581828'
+#                 )
+
+# print(message.sid)
+
+
 _MONTHTHAI = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
               'กรกฎาคม',  'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม']
 app = Flask(__name__)
 app.secret_key = 'secret'
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
 app.config["MONGO_URI"] = "mongodb://192.168.1.230:27017/addrocrtha"
 mongo = PyMongo(app)  # addrocrtha.personscan4
+Session(app)
 # conllection = mongo.db.personscan5 civil_registration
 conllection = mongo.db.civil_registration
 fileperpage = 10
-ocrlot = 56
+ocrs = []
+ocrlot = None
 info = dict()
-version = 0.1
+version = 1.3
 conn, cursor = None, None
+# SESSION LOGIN
 
 #  INSERT ONE STLDATA DICT FORMAT
+
+
+@app.route('/')
+def index():
+    global info
+    global ocrlot
+    global ocrs
+
+    if not session.get("name"):
+        return redirect("/login")
+    else:
+        #  FIND  LAST session["ocrlot"]  TO FIND session["ocrlot"] DISPLAY
+        #  DEBUG TEST  56
+        conllection = mongo.db.civil_registration
+        if session["ocrlot"] == None:
+            session["ocrlot"] = mongo.db.counters.find_one({'_id': 'lotocr'})[
+                'seq_value']
+            ocrs = (list(conllection.aggregate([{'$group': {
+                '_id': "$ocrlot",
+                'ocrdocs': {'$sum': 1}
+            }},
+                {'$sort': {'_id': -1}}, {"$limit": 5}])))
+
+            # for index, os in enumerate(ocrs):
+            #     print(os, index)
+        totalcheked = conllection.count_documents(
+            {"ocrlot": session["ocrlot"], "checked": 1})
+        totalfile = conllection.count_documents({"ocrlot": session["ocrlot"]})
+        listpage = (totalfile//fileperpage)
+        if totalfile % fileperpage > 0:
+            listpage += 1
+        page = 0
+        # print('Server session["ocrlot"] =>',
+        #       session["name"], session["ocrlot"])
+        logging.info('Server session["ocrlot"] =>' +
+                     session["name"] + ' ' + str(session["ocrlot"]))
+
+        session["page"] = page
+        session["listpage"] = listpage
+        session["totalcheked"] = totalcheked
+        session["totalfile"] = totalfile
+
+        info = {'totalcheked': totalcheked,  'conllection': 'civil_regis',
+                'totalfile': totalfile, 'listpage': listpage, "ocrlot": session["ocrlot"], "version": version, "page": page, "ocrs": ocrs}
+        return render_template('base.html',  ocrdata=[], listpage=listpage, info=info, totalcheked=totalcheked, totalfile=totalfile)
+
+
+@app.route("/logout")
+def logout():
+    logging.info('User '+session["name_sur"]+' Logout success')
+    session["name"] = None
+    session["ocrlot"] = None
+    return redirect("/")
+
+
+@app.route("/login", methods=["POST", "GET"])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    info = {'totalcheked': 0,  'conllection': 'civil_regis', 'logo': "http://192.168.1.241:3000/RecoveryScan/pic/Logo-CLT.png",
+            'totalfile': 0, 'listpage': 0, "ocrlot": 0, "version": version, "page": 0}
+
+    if request.method == "POST":
+        global conn, cursor
+        conn = pymssql.connect('192.168.1.254', 'sa', 'mymasterdb', "address")
+        cursor = conn.cursor()
+
+        sql = "SELECT Pass,user_name,name_sur,Picture FROM  EDOCUMENT.dbo.USER_PASS where user_name = %s AND Pass = %s "
+        val = (username, password)
+        cursor.execute(sql, val)
+        row = cursor.fetchone()
+        if row:
+            session["name"] = row[1]
+            session["name_sur"] = row[2]
+            # http://192.168.1.241:3000/RecoveryScan/pic/1/login.gif   '\\\\192.168.1.3\\loglawyer$\\pic\\WASAN\\login.gif'
+            session["picture"] = str(row[3]).replace(
+                "\\\\192.168.1.3\\loglawyer$\\pic\\", "http://192.168.1.241:3000/RecoveryScan/pic/")
+            session["picture"] = session["picture"].replace("\\", "/")
+            session["name"] = username  # request.form.get("name")
+            session["remote_addr"] = request.remote_addr
+
+            session["user_agent"] = [request.user_agent.platform, request.user_agent.browser,
+                                     request.user_agent.version, request.user_agent.language]
+            session["ocrlot"] = None
+            # print('User ', session["name_sur"], ' login success',
+            #       session["remote_addr"], session["user_agent"])
+
+            today = date.today()
+            # dd/mm/YY
+            flog = os.path.join(app.root_path,
+                                today.strftime("%Y/%m/%d"))
+            createdir(Path(flog))
+            flog += '/'+session["name"]+'.log'
+            # logging.basicConfig(
+            #     format='%(levelname)s:%(message)s', level=logging.DEBUG)
+            # logging.basicConfig(format='%(asctime)s %(message)s',
+            #         datefmt='%m/%d/%Y %I:%M:%S %p')
+            # logging.basicConfig(format='%(asctime)s %(message)s')
+
+            logging.basicConfig(filename=flog, filemode='w',
+                                format='%(asctime)s %(message)s',
+                                datefmt='%m/%d/%Y %I:%M:%S %p',
+                                level=logging.DEBUG)
+            logging.info('User '+session["name_sur"]+' login success')
+            logging.info(session["user_agent"])
+
+            conn.close()
+            return redirect("/")
+        else:
+            return render_template("login.html", info=info, error="ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง")
+
+    return render_template("login.html", info=info, error="")
+
+
+@app.route('/setocr/<int:setocr>')
+def setocr(setocr):
+    global info
+    global ocrlot
+
+    chkocrlot = 0
+    conllection = mongo.db.civil_registration
+    session["ocrlot"] = int(setocr)
+
+    totalcheked = conllection.count_documents(
+        {"ocrlot": session["ocrlot"], "checked": 1})
+    totalfile = conllection.count_documents({"ocrlot": session["ocrlot"]})
+    listpage = (totalfile//fileperpage)
+    if totalfile % fileperpage > 0:
+        listpage += 1
+    page = 0
+    # print(session["name"], ' Change ocrlot ==> ', session["ocrlot"])
+    logging.info('User '+session["name_sur"]+' Change ocrlot ==> '+str(
+        session["ocrlot"])+' page '+str(page)+' listpage '+str(listpage)+' totalcheked '+str(totalcheked)+' totalfile '+str(totalfile))
+
+    session["page"] = page
+    session["listpage"] = listpage
+    session["totalcheked"] = totalcheked
+    session["totalfile"] = totalfile
+
+    info = {'totalcheked': totalcheked, 'conllection': 'civil_regis',
+            'totalfile': totalfile, 'listpage': listpage, "ocrlot": session["ocrlot"], "version": version, "page": page, "ocrs": ocrs}
+    return render_template('base.html',  ocrdata=[], listpage=listpage, info=info, totalcheked=totalcheked, totalfile=totalfile)
 
 
 def fnc_thatocmsdate(str_date=None):
@@ -81,29 +255,6 @@ def Insertmissword(stldata):
     except OperationFailure as e:
         print(f"couldn't execute insert_many mylist.\n error as  {str(e)}")
     return
-
-
-@app.route('/')
-def index():
-    global info
-    global ocrlot
-    #  FIND  LAST ocrlot  TO FIND ocrlot DISPLAY
-    #  DEBUG TEST  56
-    ocrlot = mongo.db.counters.find_one({'_id': 'lotocr'})['seq_value']
-
-    conllection = mongo.db.civil_registration
-    totalcheked = conllection.count_documents({"ocrlot": ocrlot, "checked": 1})
-    totalcmissthai = mongo.db.cmissthai.count_documents({})
-    totalfile = conllection.count_documents({"ocrlot": ocrlot})
-    listpage = (totalfile//fileperpage)
-    if totalfile % fileperpage > 0:
-        listpage += 1
-    page = 0
-    print('ocrlot ', ocrlot)
-
-    info = {'totalcheked': totalcheked, 'totalcmissthai': totalcmissthai, 'conllection': 'civil_regis',
-            'totalfile': totalfile, 'listpage': listpage, "ocrlot": ocrlot, "version": version, "page": page}
-    return render_template('base.html', ocrdata=[], listpage=listpage, info=info, totalcheked=totalcheked, totalfile=totalfile)
 
 
 @app.route('/findidcard', methods=['POST', 'GET'])  #
@@ -175,7 +326,8 @@ def page(page):
     # print(page)
     # listpage=totalfile//fileperpage
     skipfile = fileperpage*int(page)
-    totalcheked = conllection.count_documents({"ocrlot": ocrlot, "checked": 1})
+    totalcheked = conllection.count_documents(
+        {"ocrlot": session["ocrlot"], "checked": 1})
     info['totalcheked'] = totalcheked
     listpage = info['listpage']
     totalfile = info['totalfile']
@@ -187,7 +339,7 @@ def page(page):
     #     fileperpage).skip(skipfile).sort({'accu_address', 1, '_id', 1}) "accu_address": 1,
     sortDic = {"accu_address": 1}  # ["index_of_lotfile", 1]
 
-    ocrdata = conllection.find({"ocrlot": ocrlot}).limit(
+    ocrdata = conllection.find({"ocrlot": session["ocrlot"]}).limit(
         fileperpage).skip(skipfile).sort("index_of_lotfile", 1)
 
     # ocrdata = conllection.find({"ocrlot": ocrlot}).limit(
@@ -196,8 +348,17 @@ def page(page):
     # for d in ocrdata:
     #     d['ZIPCODE'] = str(int((d['ZIPCODE']))
     #                        ) if d['ZIPCODE'] is not None else ''
+    session["page"] = page
+    session["listpage"] = listpage
+    session["totalcheked"] = totalcheked
+    session["totalfile"] = totalfile
 
-    return render_template('base.html', ocrdata=ocrdata, page=int(page), listpage=listpage, info=info, totalcheked=totalcheked, totalfile=totalfile)
+    # print(session["name"], 'session["ocrlot"] =>',
+    #       session["ocrlot"], 'page =>', page)
+    logging.info('%s %s %s %s %s ', session["name"], 'session["ocrlot"] =>',
+                 session["ocrlot"], 'page =>', page)
+
+    return render_template('base.html', ocrdata=ocrdata, page=int(page), listpage=listpage, info=info, totalcheked=totalcheked, totalfile=totalfile, audit=session["name"])
     #    listpage=listpage,totalcheked=totalcheked,totalfile=totalfile)
 
 
@@ -216,19 +377,27 @@ def addmissword():
 def toggleUpdate():
     dumdict = request.form.to_dict()
     myquery = {'index_of_lotfile': int(
-        dumdict['index_of_lotfile']), 'ocrlot': ocrlot}
+        dumdict['index_of_lotfile']), 'ocrlot': session["ocrlot"]}
     dumdict = dict(request.form)
-    print(' index_of_lotfile ', str(
-        dumdict['index_of_lotfile']), ' Check =', str(dumdict['checked']))
+    # print(' index_of_lotfile ', str(
+    #     dumdict['index_of_lotfile']), ' Check =', str(dumdict['checked']))
     if dumdict['checked'] == '1':
         conllection.update_one(myquery, {'$set': {'checked': 0}})
-        print('index_of_lotfile', str(
+        print(session['name'], session["ocrlot"], 'index_of_lotfile', str(
             dumdict['index_of_lotfile']), '=====> Unchecked')
+        logging.info('%s %s %s %s %s', session['name'], session["ocrlot"], 'index_of_lotfile', str(
+            dumdict['index_of_lotfile']), '=====> Unchecked')
+
         return json.dumps('Cancle')
 
     dumdict['checked'] = 1
-    print('index_of_lotfile', str(
+    # print(session['name'], session["ocrlot"], 'index_of_lotfile', str(
+    #     dumdict['index_of_lotfile']), '=====> Checked')
+    logging.info('%s %s %s %s %s', session['name'], session["ocrlot"], 'index_of_lotfile', str(
         dumdict['index_of_lotfile']), '=====> Checked')
+
+    # conllection.update_one(myquery, {'$set': {'checked': 1}})
+    # return json.dumps('Checked')
     dumdict.pop('index_of_lotfile')
     newvalues = {"$set": dumdict}
     conllection.update_one(myquery, newvalues)
@@ -253,7 +422,8 @@ def mongo2sql():
     #  FIND  DATA TO DICT FOR  DISPLAY
     conllection = mongo.db.civil_registration
     ocrdata = conllection.find(myquery)
-
+    logging.info('mongo2sql')
+    # logging.info(len(list(ocrdata)))
     #  FIND  DATA TO DICT FOR  DISPLAY
     lcount = 0
     ucount = 0
@@ -362,14 +532,14 @@ def transfer():
     cursor = conn.cursor()  # as_dict=True
 
     conllection = mongo.db.civil_registration
-    myquery = {'ocrlot': int(ocrlot), 'checked': 1}
+    myquery = {'ocrlot': session["ocrlot"], 'checked': 1}
     totalcheked = conllection.count_documents(myquery)
 
-    myquery = {'ocrlot': int(ocrlot), 'loaddate': {
+    myquery = {'ocrlot': session["ocrlot"], 'loaddate': {
         "$exists": True, "$ne": None}}
     totalloaddate = conllection.count_documents(myquery)
 
-    myquery = {'ocrlot': int(ocrlot), 'loaddate': None}
+    myquery = {'ocrlot': session["ocrlot"], 'loaddate': None}
     totalunloaddate = conllection.count_documents(myquery)
     info['transfer'] = "ข้อมูลทั้งหมด :" + str(totalcheked) + " รายการ"
     info['loaddata'] = "Load data: " + \
@@ -379,6 +549,14 @@ def transfer():
     # info['transfer'] = ' transfer' + \
     #     str(scount) + ' รายการ'+' จาก '+str(ccount) + ' รายการ'
     # return render_template('transfer.html', info=info)
+
+
+def createdir(p):
+    # เตรียมโฟรเดอร์เก็บไฟล์
+    try:
+        p.mkdir(parents=True)
+    except FileExistsError as exc:
+        print('Folder ' + p._str + '..........Ok ')
 
 
 # if __name__ == '__main__':

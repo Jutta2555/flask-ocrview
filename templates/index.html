@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        body {
+            height: 80%;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            padding-top: 10px;
+            padding-bottom: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .form-signin {
+            width: 100%;
+            max-width: 330px;
+            padding: 15px;
+            margin: auto;
+        }
+
+        .form-signin .checkbox {
+            font-weight: 400;
+        }
+
+        .form-signin .form-floating:focus-within {
+            z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+            margin-bottom: -1px;
+            border-bottom-right-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+            margin-bottom: 10px;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+        }
+
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+
+        /* relative  */
+        .card {
+            border: lightblue 1px;
+            /* position: -webkit-sticky; */
+            margin: 0 5px 2px;
+            /* margin: 0 15px 20px; */
+            padding: 20px 60px 20px;
+            /* padding: 10px 50px; */
+            width: 400px;
+            justify-items: center;
+            /* justify-items: left;    */
+            box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            background: var(--white);
+            transition: box-shadow .15s ease;
+            background-color: #f5f5f5;
+        }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {{info['app']}}-v{{info['version']}}
+    </title>
+
+</head>
+
+<body>
+    <div class="container-fluid" style=" flex-wrap: wrap;display: flex;justify-content: left; margin-top:0px ;">
+        <div class="card  ">
+            <div class="text-center ">
+                <img class="rounded-circle mt-2" src="{{ session.picture }}" style="height:150px ;width:150px ;">
+                <p class="h5 mt-3 mb-2 text-secondary fw-normal">สวัสดี </p>
+                <p class="h3 mt-2 mb-2 text-primary fw-bold"> {{ session.name_sur }}</p>
+            </div>
+            <!-- <div class="card " style="width: 300px ;position:relative ;  justify-items: center;"> -->
+            <p class="text-secondary mt-1 mb-1" style="font-size : 10px;"><strong>สังกัด :</strong> {{
+                session.department }} / <strong>ลักษณะงาน
+                    :</strong> {{ session.Description }}</p>
+            <p class="text-secondary mt-1 mb-1" style="font-size : 10px;"><strong>รหัสประจำตัว:</strong> {{
+                session.user_code }}</p>
+            <p class="text-secondary  mt-1 mb-1" style="font-size : 10px;"><strong>เบอร์มือถือ :</strong> {{
+                session.mobileno }} /
+                <strong>เบอร์โต๊ะ : </strong>{{ session.Telno }}
+            </p>
+            <p class="text-secondary   mt-1 mb-1" style="font-size : 10px;"><strong>ข้อความ SMS ประจำตัว :</strong></p>
+            <p class="text-secondary  mt-1 mb-3" style="font-size : 10px;"> {{
+                session.BroadCast1 }}</p>
+            <!-- </div> -->
+            <span class="d-block p-2 btn-lg text-black"><strong>เลือกหน้าจอทำงาน</strong></span>
+
+            <span class="btn btn-lg mt-1 btn-primary btn-block"><a class="text-white" href="{{ url_for('sms2') }}"><i
+                        class="text-white fa fa-fw fa-sign-out "></i>SMS
+                    Center.</a>
+            </span>
+
+            <span class="btn btn-lg mt-2 btn-primary btn-block"><a class="text-white" href="{{ url_for('civil') }}"><i
+                        class="text-white fa fa-fw fa-sign-out "></i>ตรวจ
+                    OCR
+                    สทร.</a>
+            </span>
+
+
+            <span class="btn btn-lg mt-2 btn-primary btn-block"><a class="text-white" href="{{ url_for('logout') }}"><i
+                        class="text-white fa fa-fw fa-sign-out "></i>ออกจากระบบ</a>
+            </span>
+
+        </div>
+    </div>
+    <!-- <h5 class="col-lg-4 col-sm-12 alert alert-info" role="info">message</h5> -->
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    {% for message in messages %}
+    <h5 class="col-lg-4 col-sm-12 alert alert-info" role="info">{{message}}</h5>
+
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+</body>
+
+
+</html>

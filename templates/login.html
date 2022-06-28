@@ -76,7 +76,7 @@
     <!-- <meta charset="utf-8"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        {{info['conllection']}}-STL v3.{{info['version']}}
+        CHALIN-APP v{{info['version']}}
     </title>
 
 </head>
@@ -84,21 +84,29 @@
 <body>
     <main class="form-signin">
         <div class="text-center ">
-            <img class="rounded-circle" src="{{info['logo']}}" alt="{{info['conllection']}}" width="72" height="72">
-            <h1 class="h3 mb-3 font-weight-normal">CHALINTHON-STL v3.{{info['version']}}</h1>
+            <img class="rounded-circle" src="{{info['logo']}}" alt="{{info['app']}}" width="72" height="72">
+            <h1 class="h2 mb-1 text-primary font-weight-bold">CHALIN-APP</h1>
+            <h5 class="h5 mb-3 text-secondary font-weight-normal">version {{info['version']}}</h5>
             <p>{{info['description']}}</p>
         </div>
-        <h4 style="color: crimson"> {{ error }}</h4>
+        <!-- <h4 style="color: crimson"> {{ error }}</h4> -->
+        {% with messages = get_flashed_messages(category_filter=['danger']) %}
+        {% if messages %}
+        {% for message in messages %}
+        <h5 class="col-lg-4 col-sm-12 alert alert-danger" role="alert">{{message}}</h5>
 
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <form action="/login" method="POST">
-            <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+            <!-- <h1 class="h4 mb-1 fw-normal">Please sign in</h1> -->
 
             <div class="form-floating">
-                <label for="floatingInput">User Name</label>
+                <label class="text-secondary" for="floatingInput">User Name</label>
                 <input type="text" name="username" class="form-control" id="floatingInput" placeholder="Username">
             </div>
             <div class="form-floating">
-                <label for="floatingPassword">Password</label>
+                <label class="text-secondary" for="floatingPassword">Password</label>
                 <input type="password" name="password" class="form-control" id="floatingPassword"
                     placeholder="Password">
             </div>
@@ -110,7 +118,8 @@
             </div> -->
             <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
             <!-- <button class="w-100 btn btn-lg btn-primary btn-center" type="submit">Sign in</button> -->
-            <p class="mt-5 mb-3 text-center">&copy; CHALINTHON SINCE 2000</p>
+            <p class="text-secondary mt-2 text-center ">&copy; CHALINTHON SINCE 2000</p>
+            <!-- mt-5 mb-2 text-center -->
         </form>
     </main>
 

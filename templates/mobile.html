@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <!-- <meta charset="utf-8"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {{info['app']}} v.{{info['version']}}
+    </title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@100&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- เวอร์ชั่นสคริป ที่ใช้งาน ดรอบลิส 3.6.0 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 30px;
+            height: 15px;
+            margin-top: 5px;
+            margin-left: 5px;
+            margin-bottom: 5px;
+            /* bottom: 850px; */
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .1s;
+            transition: .1s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 15px;
+            width: 15px;
+            left: 1px;
+            bottom: 1px;
+            background-color: white;
+            -webkit-transition: .1s;
+            transition: .1s;
+        }
+
+        input:checked+.slider {
+            background-color: #57acf2b5;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+            outline-width: 1px;
+            outline-style: solid;
+            /* outline-style: dashed; */
+            outline-color: rgb(100, 208, 235);
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(100px);
+            -ms-transform: translateX(50px);
+            transform: translateX(46px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar  navbar-fixed-top" style="background-color: #f5f5f5;">
+        <!--  navbar-inverse-->
+        <div class="container-fluid">
+            <ul class="nav navbar-nav ">
+                <li class="active">
+                    <a class="navbar-brand" href="{{ url_for('profile')}}"><i class="fa fa-fw fa-home"></i>หน้าหลัก</a>
+                </li>
+
+
+                <form class="navbar-form navbar-left" action="/findtel_no" method="post">
+                    <input type="text" name="tel_nof" id="tel_nof" class="form-control"
+                        placeholder="ค้นหาเบอร์โทรศัพท์">
+                    <button type="submit" class="btn btn-default" style="margin-left: 220px;"><i
+                            class="fa fa-fw fa-search"></i>ค้นหา</button>
+
+                </form>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active">
+                    <img src="{{ session.picture }}" style="height:50px ;width:50px ;">
+                    <!-- class="mx-auto d-block" class="rounded-circle active"-->
+                </li>
+                <li class="active"><a href="{{ url_for('profile')}}"><i class="fa fa-fw fa-user"></i>{{
+                        session.name_sur }}</a></li>
+
+                <li><a href="{{ url_for('logout') }}"><i class="fa fa-fw fa-sign-out"></i>ออกจากระบบ</a></li>
+
+            </ul>
+
+
+
+        </div>
+    </nav>
+
+
+    <!-- container-fluid -->
+    <div class="container-fluid" style=" flex-wrap: wrap;display: flex;justify-content: center; margin-top:50px ;">
+
+        <div class="accordion" id="accordion2">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <div class="media" style="color: #2079c1;background-color: #ffffff;">
+                        <div class="media-body">
+                            <table class="table table-sm ">
+                                <thead>
+                                    <tr>
+                                        <th scope="col"><i class="fa fa-fw fa-3x fa-mobile"> Phone</i></th>
+                                        <th scope="col"><i class="fa fa-fw fa-2x fa-building-o"> Account.Info</i></th>
+                                        <th scope="col"><i class="fa fa-fw fa-2x  fa-user-o"> Record.Info</i></th>
+                                    </tr>
+                                    <tr>
+                                        <th scope="col">
+                                            <h2
+                                                style=" flex-wrap: wrap;display: flex;justify-content: left;margin-left: 0px; ">
+                                                <strong style="margin-left: 10px;">{{session.phone_info['tel_no']
+                                                    }}</strong>
+                                            </h2>
+                                        </th>
+                                        <th scope="col">
+                                            <h4>
+                                                <strong style="margin-left: 0px;">{{
+                                                    session.phone_info.company_code }}</strong>
+                                                {{session.phone_info.account_no }}
+                                                {{ session.phone_info.account_name }}
+                                            </h4>
+                                        </th>
+                                        <th scope="col">
+                                            <h4>
+                                                <strong style="margin-left: 0px;">{{
+                                                    session.phone_info.user_update }}</strong>
+                                                {{ session.phone_info.timestmp }}
+                                            </h4>
+                                        </th>
+
+                                    </tr>
+
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapseSMSBOX">
+                        <div class="media" style="color: #2079c1;background-color: #f5f5f5;">
+                            <div class="media-body">
+                                <h4 style=" flex-wrap: wrap;display: flex;justify-content: left;margin-left: 20px; ">
+                                    ({{session.smsboxcount }})<i class="fa fa-fw  fa-inbox"> </i>
+                                </h4>
+
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div id="collapseSMSBOX" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+                        {% if session.smsbox %}
+                        <table class="table ">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Time</th>
+                                    <th scope="col">Message</th>
+                                    <th scope="col">Call.Time</th>
+                                    <th scope="col">Caller</th>
+                                </tr>
+                            </thead>
+                            {% for sms in session.smsbox %}
+                            <tbody>
+                                <tr>
+                                    <th scope="row">{{ sms.row_number }}</th>
+                                    <td>{{ sms.timestamp }}</td>
+                                    <td>{{ sms.text }}</td>
+                                    {% if sms.cdrcall %}
+                                    <td>{{ sms.cdrcall }}</td>
+                                    <td>{{ sms.cdrcall_id }}</td>
+                                    {% else %}
+                                    <td>-</td>
+                                    <td>-</td>
+                                    {% endif %}
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                            {% endfor %}
+                        </table>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+
+
+
+</body>
+
+
+</html>

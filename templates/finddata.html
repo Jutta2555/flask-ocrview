@@ -31,14 +31,18 @@
 
     <div class="container" style=" flex-wrap: wrap;justify-content: center ; display: flex;">
 
-
         {% for cn in ocrdata %}
+
+        {% if cn['accu_address'] ==100 and cn['accu_name']==100 %}
         <div class="card" id="card{{ cn['index_of_lotfile']}}">
-            <img src="{{ cn['filedesinat'] }}" srcset="">
+            <img src="{{ cn['filedesinat'] }}" srcset="" style="opacity: 0.4;">
             <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
+                <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ
+                    = {{
+                    cn['accu_name'] }}</h2>
 
                 <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
-                <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}">
+                <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
                 <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
                     style="left: 363px;top: 120px;font-size: 22px;  ">
 
@@ -97,16 +101,403 @@
                     {% endif %}
                     <span class="slider round"></span>
                 </label> <br>
-                <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} /
-                    ความแม่นยำชื่อ =
-                    {{
-                    cn['accu_name'] }}</h3>
+                <!-- <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
+          cn['accu_name'] }}</h3> -->
 
             </form>
 
         </div>
 
-        {% endfor %}
+
+
+
+
+        {% elif cn['accu_address'] ==100 and cn['accu_name']==90 %}
+        <div class="card-blue" id="card{{ cn['index_of_lotfile']}}">
+
+            <img src="{{ cn['filedesinat'] }}" srcset="" style="opacity: 0.4;">
+            <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
+                <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ
+                    = {{
+                    cn['accu_name'] }}</h2>
+
+                <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
+                <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
+                <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
+                    style="left: 363px;top: 120px;font-size: 22px;  ">
+
+                <input type="text" id="fidname" name="Name" value="{{ cn['Name'] }}"
+                    style="left: 230px;top: 168px;font-size: 20px;  ">
+                <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"
+                    style="left: 850px;top: 205px;font-size: 20px;  ">
+                <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"
+                    style="left: 1080px;top: 205px;font-size: 20px;   ">
+
+                <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"
+                    style="left: 230px;top: 240px;font-size: 20px; ">
+                <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"
+                    style="left: 1040px;top: 270px;font-size: 20px;  ">
+
+                <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}"
+                    style="left: 230px;top: 315px;font-size: 20px; ">
+                <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}"
+                    style="left: 508px;top: 315px;font-size: 16px;  ">
+                <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}"
+                    style="left: 980px;top: 345px;font-size: 20px;  ">
+
+                <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"
+                    style="left: 230px;top: 385px;font-size: 20px;    ">
+                <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"
+                    style="left: 510px;top: 385px;font-size: 16px; ">
+                <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}"
+                    style="left: 980px;top: 415px;font-size: 20px;   ">
+
+                <input type="text" id="faddr" name="address" value="{{ cn['address'] }}"
+                    style="left: 250px;top: 555px;font-size: 20px;  background-color: whitesmoke;   ">
+                <label for="ftumbol"
+                    style=" position: absolute;left: 230px;top: 589px;font-size: 20px; height:40px; ">ต.</label><br>
+                <input type="text" id="ftumbol" name="TUMBUL" value="{{ cn['TUMBUL'] }}"
+                    style="left: 250px;top: 589px;font-size: 20px; background-color: whitesmoke;    ">
+                <label for="faumphur"
+                    style=" position: absolute;left: 230px;top: 623px;font-size: 20px;  height:40px;">อ.</label><br>
+                <input type="text" id="faumphur" name="AUMPUR" value="{{ cn['AUMPUR'] }}"
+                    style="left: 250px;top: 623px;font-size: 20px;background-color: whitesmoke;  ">
+                <label for="fprovince"
+                    style=" position: absolute;left: 230px;top: 657px;font-size: 20px; height:40px; ">จ.</label><br>
+                <input type="text" id="fprovince" name="PROVINCE" value="{{ cn['PROVINCE'] }}"
+                    style="left: 250px;top: 657px;font-size: 20px;background-color: whitesmoke;   ">
+                <input type="text" id="fzipcode" name="ZIPCODE" value="{{ cn['ZIPCODE'] }}"
+                    style="left: 250px;top: 690px;font-size: 16px;background-color: whitesmoke;  ">
+
+                <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"
+                    style="left: 360px;top: 800px;font-size: 20px; width: 70%;  ">
+
+
+                <label class="switch">
+                    {% if cn['checked'] %}
+                    <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox" checked>
+                    {% else %}
+                    <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox">
+                    {% endif %}
+                    <span class="slider round"></span>
+                </label> <br>
+                <!-- <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
+          cn['accu_name'] }}</h3> -->
+
+            </form>
+
+        </div>
+
+
+        {% elif cn['accu_address'] ==50 and cn['accu_name']>= 90 %}
+        <div class="card-yellow" id="card{{ cn['index_of_lotfile']}}">
+
+            <img src="{{ cn['filedesinat'] }}" srcset="" style="opacity: 0.4;">
+            <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
+                <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ
+                    = {{
+                    cn['accu_name'] }}</h2>
+
+                <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
+                <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
+                <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
+                    style="left: 363px;top: 120px;font-size: 22px;  ">
+
+                <input type="text" id="fidname" name="Name" value="{{ cn['Name'] }}"
+                    style="left: 230px;top: 168px;font-size: 20px;  ">
+                <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"
+                    style="left: 850px;top: 205px;font-size: 20px;  ">
+                <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"
+                    style="left: 1080px;top: 205px;font-size: 20px;   ">
+
+                <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"
+                    style="left: 230px;top: 240px;font-size: 20px; ">
+                <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"
+                    style="left: 1040px;top: 270px;font-size: 20px;  ">
+
+                <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}"
+                    style="left: 230px;top: 315px;font-size: 20px; ">
+                <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}"
+                    style="left: 508px;top: 315px;font-size: 16px;  ">
+                <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}"
+                    style="left: 980px;top: 345px;font-size: 20px;  ">
+
+                <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"
+                    style="left: 230px;top: 385px;font-size: 20px;    ">
+                <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"
+                    style="left: 510px;top: 385px;font-size: 16px; ">
+                <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}"
+                    style="left: 980px;top: 415px;font-size: 20px;   ">
+
+                <input type="text" id="faddr" name="address" value="{{ cn['address'] }}"
+                    style="left: 250px;top: 555px;font-size: 20px;  background-color: whitesmoke;   ">
+                <label for="ftumbol"
+                    style=" position: absolute;left: 230px;top: 589px;font-size: 20px; height:40px; ">ต.</label><br>
+                <input type="text" id="ftumbol" name="TUMBUL" value="{{ cn['TUMBUL'] }}"
+                    style="left: 250px;top: 589px;font-size: 20px; background-color: whitesmoke;    ">
+                <label for="faumphur"
+                    style=" position: absolute;left: 230px;top: 623px;font-size: 20px;  height:40px;">อ.</label><br>
+                <input type="text" id="faumphur" name="AUMPUR" value="{{ cn['AUMPUR'] }}"
+                    style="left: 250px;top: 623px;font-size: 20px;background-color: whitesmoke;  ">
+                <label for="fprovince"
+                    style=" position: absolute;left: 230px;top: 657px;font-size: 20px; height:40px; ">จ.</label><br>
+                <input type="text" id="fprovince" name="PROVINCE" value="{{ cn['PROVINCE'] }}"
+                    style="left: 250px;top: 657px;font-size: 20px;background-color: whitesmoke;   ">
+                <input type="text" id="fzipcode" name="ZIPCODE" value="{{ cn['ZIPCODE'] }}"
+                    style="left: 250px;top: 690px;font-size: 16px;background-color: whitesmoke;  ">
+
+                <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"
+                    style="left: 360px;top: 800px;font-size: 20px; width: 70%;  ">
+
+
+                <label class="switch">
+                    {% if cn['checked'] %}
+                    <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox" checked>
+                    {% else %}
+                    <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox">
+                    {% endif %}
+                    <span class="slider round"></span>
+                </label> <br>
+                <!-- <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
+          cn['accu_name'] }}</h3> -->
+
+            </form>
+
+        </div>
+
+
+
+
+        {% elif cn['accu_address'] <= 100 and cn['accu_name']<=100 %} <div class="card-orange"
+            id="card{{ cn['index_of_lotfile']}}">
+
+            <img src="{{ cn['filedesinat'] }}" srcset="" style="opacity: 0.4;">
+            <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
+                <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} ความแม่นยำชื่อ
+                    = {{
+                    cn['accu_name'] }}</h2>
+
+                <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
+                <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
+                <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
+                    style="left: 363px;top: 120px;font-size: 22px;  ">
+
+                <input type="text" id="fidname" name="Name" value="{{ cn['Name'] }}"
+                    style="left: 230px;top: 168px;font-size: 20px;  ">
+                <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"
+                    style="left: 850px;top: 205px;font-size: 20px;  ">
+                <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"
+                    style="left: 1080px;top: 205px;font-size: 20px;   ">
+
+                <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"
+                    style="left: 230px;top: 240px;font-size: 20px; ">
+                <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"
+                    style="left: 1040px;top: 270px;font-size: 20px;  ">
+
+                <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}"
+                    style="left: 230px;top: 315px;font-size: 20px; ">
+                <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}"
+                    style="left: 508px;top: 315px;font-size: 16px;  ">
+                <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}"
+                    style="left: 980px;top: 345px;font-size: 20px;  ">
+
+                <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"
+                    style="left: 230px;top: 385px;font-size: 20px;    ">
+                <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"
+                    style="left: 510px;top: 385px;font-size: 16px; ">
+                <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}"
+                    style="left: 980px;top: 415px;font-size: 20px;   ">
+
+                <input type="text" id="faddr" name="address" value="{{ cn['address'] }}"
+                    style="left: 250px;top: 555px;font-size: 20px;  background-color: whitesmoke;   ">
+                <label for="ftumbol"
+                    style=" position: absolute;left: 230px;top: 589px;font-size: 20px; height:40px; ">ต.</label><br>
+                <input type="text" id="ftumbol" name="TUMBUL" value="{{ cn['TUMBUL'] }}"
+                    style="left: 250px;top: 589px;font-size: 20px; background-color: whitesmoke;    ">
+                <label for="faumphur"
+                    style=" position: absolute;left: 230px;top: 623px;font-size: 20px;  height:40px;">อ.</label><br>
+                <input type="text" id="faumphur" name="AUMPUR" value="{{ cn['AUMPUR'] }}"
+                    style="left: 250px;top: 623px;font-size: 20px;background-color: whitesmoke;  ">
+                <label for="fprovince"
+                    style=" position: absolute;left: 230px;top: 657px;font-size: 20px; height:40px; ">จ.</label><br>
+                <input type="text" id="fprovince" name="PROVINCE" value="{{ cn['PROVINCE'] }}"
+                    style="left: 250px;top: 657px;font-size: 20px;background-color: whitesmoke;   ">
+                <input type="text" id="fzipcode" name="ZIPCODE" value="{{ cn['ZIPCODE'] }}"
+                    style="left: 250px;top: 690px;font-size: 16px;background-color: whitesmoke;  ">
+
+                <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"
+                    style="left: 360px;top: 800px;font-size: 20px; width: 70%;  ">
+
+
+                <label class="switch" value="{{ cn['accu_address'] }}">
+                    {% if cn['checked'] %}
+                    <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox" checked>
+                    {% else %}
+                    <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox">
+                    {% endif %}
+                    <span class="slider round"></span>
+                </label> <br>
+                <!-- <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} / ความแม่นยำชื่อ = {{
+          cn['accu_name'] }}</h3> -->
+
+            </form>
+    </div>
+    {% else %} <div class="card-orange" id="card{{ cn['index_of_lotfile']}}">
+        <h2>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำ ที่อยู่ = {{ cn['accu_address'] }} </h2>
+        <h2> ความแม่นยำชื่อ = {{
+            cn['accu_name'] }}</h2>
+
+        <img src="{{ cn['filedesinat'] }}" srcset="" style="opacity: 0.4;">
+        <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
+
+            <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
+            <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
+            <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
+                style="left: 363px;top: 120px;font-size: 22px;  ">
+
+            <input type="text" id="fidname" name="Name" value="{{ cn['Name'] }}"
+                style="left: 230px;top: 168px;font-size: 20px;  ">
+            <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"
+                style="left: 850px;top: 205px;font-size: 20px;  ">
+            <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"
+                style="left: 1080px;top: 205px;font-size: 20px;   ">
+
+            <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"
+                style="left: 230px;top: 240px;font-size: 20px; ">
+            <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"
+                style="left: 1040px;top: 270px;font-size: 20px;  ">
+
+            <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}"
+                style="left: 230px;top: 315px;font-size: 20px; ">
+            <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}"
+                style="left: 508px;top: 315px;font-size: 16px;  ">
+            <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}"
+                style="left: 980px;top: 345px;font-size: 20px;  ">
+
+            <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"
+                style="left: 230px;top: 385px;font-size: 20px;    ">
+            <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"
+                style="left: 510px;top: 385px;font-size: 16px; ">
+            <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}"
+                style="left: 980px;top: 415px;font-size: 20px;   ">
+
+            <input type="text" id="faddr" name="address" value="{{ cn['address'] }}"
+                style="left: 250px;top: 555px;font-size: 20px;  background-color: whitesmoke;   ">
+            <label for="ftumbol"
+                style=" position: absolute;left: 230px;top: 589px;font-size: 20px; height:40px; ">ต.</label><br>
+            <input type="text" id="ftumbol" name="TUMBUL" value="{{ cn['TUMBUL'] }}"
+                style="left: 250px;top: 589px;font-size: 20px; background-color: whitesmoke;    ">
+            <label for="faumphur"
+                style=" position: absolute;left: 230px;top: 623px;font-size: 20px;  height:40px;">อ.</label><br>
+            <input type="text" id="faumphur" name="AUMPUR" value="{{ cn['AUMPUR'] }}"
+                style="left: 250px;top: 623px;font-size: 20px;background-color: whitesmoke;  ">
+            <label for="fprovince"
+                style=" position: absolute;left: 230px;top: 657px;font-size: 20px; height:40px; ">จ.</label><br>
+            <input type="text" id="fprovince" name="PROVINCE" value="{{ cn['PROVINCE'] }}"
+                style="left: 250px;top: 657px;font-size: 20px;background-color: whitesmoke;   ">
+            <input type="text" id="fzipcode" name="ZIPCODE" value="{{ cn['ZIPCODE'] }}"
+                style="left: 250px;top: 690px;font-size: 16px;background-color: whitesmoke;  ">
+
+            <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"
+                style="left: 360px;top: 800px;font-size: 20px; width: 70%;  ">
+
+
+            <label class="switch" value="{{ cn['accu_address'] }}">
+                {% if cn['checked'] %}
+                <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox" checked>
+                {% else %}
+                <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox">
+                {% endif %}
+                <span class="slider round"></span>
+            </label> <br>
+
+        </form>
+
+    </div>
+
+
+
+
+
+    {% endif %}
+
+
+
+
+    <div class="card" id="card{{ cn['index_of_lotfile']}}">
+        <img src="{{ cn['filedesinat'] }}" srcset="">
+        <form role="form" method="post" name="form{{ cn['index_of_lotfile']}}" id="form{{ cn['index_of_lotfile']}}">
+
+            <input type="hidden" id="index_of_lotfile" name="index_of_lotfile" value="{{ cn['index_of_lotfile'] }}">
+            <input type="hidden" id="checked" name="checked" value="{{ cn['checked'] }}">
+            <input type="text" id="fidcard" name="idcard" value="{{ cn['idcard'] }}"
+                style="left: 363px;top: 120px;font-size: 22px;  ">
+
+            <input type="text" id="fidname" name="Name" value="{{ cn['Name'] }}"
+                style="left: 230px;top: 168px;font-size: 20px;  ">
+            <input type="text" id="fgender" name="gender" value="{{ cn['gender'] }}"
+                style="left: 850px;top: 205px;font-size: 20px;  ">
+            <input type="text" id="fnationality" name="nationality" value="{{ cn['nationality'] }}"
+                style="left: 1080px;top: 205px;font-size: 20px;   ">
+
+            <input type="text" id="fdob" name="dob" value="{{ cn['dob'] }}"
+                style="left: 230px;top: 240px;font-size: 20px; ">
+            <input type="text" id="fstatus" name="status" value="{{ cn['status'] }}"
+                style="left: 1040px;top: 270px;font-size: 20px;  ">
+
+            <input type="text" id="fmother" name="mother" value="{{ cn['mother'] }}"
+                style="left: 230px;top: 315px;font-size: 20px; ">
+            <input type="text" id="fid_mother" name="id_mother" value="{{ cn['id_mother'] }}"
+                style="left: 508px;top: 315px;font-size: 16px;  ">
+            <input type="text" id="fmothernation" name="mothernation" value="{{ cn['mothernation'] }}"
+                style="left: 980px;top: 345px;font-size: 20px;  ">
+
+            <input type="text" id="ffather" name="father" value="{{ cn['father'] }}"
+                style="left: 230px;top: 385px;font-size: 20px;    ">
+            <input type="text" id="fid_father" name="id_father" value="{{ cn['id_father'] }}"
+                style="left: 510px;top: 385px;font-size: 16px; ">
+            <input type="text" id="ffathernation" name="fathernation" value="{{ cn['fathernation'] }}"
+                style="left: 980px;top: 415px;font-size: 20px;   ">
+
+            <input type="text" id="faddr" name="address" value="{{ cn['address'] }}"
+                style="left: 250px;top: 555px;font-size: 20px;  background-color: whitesmoke;   ">
+            <label for="ftumbol"
+                style=" position: absolute;left: 230px;top: 589px;font-size: 20px; height:40px; ">ต.</label><br>
+            <input type="text" id="ftumbol" name="TUMBUL" value="{{ cn['TUMBUL'] }}"
+                style="left: 250px;top: 589px;font-size: 20px; background-color: whitesmoke;    ">
+            <label for="faumphur"
+                style=" position: absolute;left: 230px;top: 623px;font-size: 20px;  height:40px;">อ.</label><br>
+            <input type="text" id="faumphur" name="AUMPUR" value="{{ cn['AUMPUR'] }}"
+                style="left: 250px;top: 623px;font-size: 20px;background-color: whitesmoke;  ">
+            <label for="fprovince"
+                style=" position: absolute;left: 230px;top: 657px;font-size: 20px; height:40px; ">จ.</label><br>
+            <input type="text" id="fprovince" name="PROVINCE" value="{{ cn['PROVINCE'] }}"
+                style="left: 250px;top: 657px;font-size: 20px;background-color: whitesmoke;   ">
+            <input type="text" id="fzipcode" name="ZIPCODE" value="{{ cn['ZIPCODE'] }}"
+                style="left: 250px;top: 690px;font-size: 16px;background-color: whitesmoke;  ">
+
+            <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"
+                style="left: 360px;top: 800px;font-size: 20px; width: 70%;  ">
+
+
+            <label class="switch">
+                {% if cn['checked'] %}
+                <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox" checked>
+                {% else %}
+                <input onclick="mycheck({{ cn['index_of_lotfile']}})" type="checkbox">
+                {% endif %}
+                <span class="slider round"></span>
+            </label> <br>
+            <h3>ลำดับไฟล์ {{ cn['index_of_lotfile']}} / ความแม่นยำที่อยู่ = {{ cn['accu_address'] }} /
+                ความแม่นยำชื่อ =
+                {{
+                cn['accu_name'] }}</h3>
+
+        </form>
+
+    </div>
+
+    {% endfor %}
     </div>
 
 

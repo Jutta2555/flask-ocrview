@@ -348,3 +348,5 @@ docker commit e20b85626de1 romeo097/ocrview:v1mongo
 docker push romeo097/ocrview:v1mongo
 
 docker container run -dit -p 5000:5000 --name=ocrwebv1-ps5 -v $PWD:/app  romeo097/ocrview:v1mongo
+
+docker run --name my-redis -dit -p 6379:6379 redis 

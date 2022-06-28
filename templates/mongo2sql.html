@@ -1,0 +1,215 @@
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {{session.name}}-STL v.{{info['version']}}
+    </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> -->
+    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script> -->
+
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- เวอร์ชั่นสคริป ที่ใช้งาน ดรอบลิส 3.6.0 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</head>
+<style>
+    /*   
+  body {
+        display: flex;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #f5f5f5;
+    } */
+
+    .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+    }
+
+    @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+        }
+    }
+
+    /* relative  */
+    .card {
+        border: lightblue 1px;
+        margin: 0 5px 2px;
+        padding: 20px 20px 20px;
+        width: 500px;
+        justify-items: center;
+        box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.15);
+        border-radius: 10px;
+        background: var(--white);
+        transition: box-shadow .15s ease;
+        background-color: #f5f5f5;
+    }
+</style>
+
+<body>
+    <div class="container-fluid" style=" flex-wrap: wrap;display: flex; margin-top:0px ;">
+        <!-- justify-content: center; -->
+        <div class="card " style=" align-items:top-left;height: 780px;width:300px ;">
+            <div class="text-center ">
+                <h1><a href="{{ url_for('index') }}"><i class="fa fa-center fa-fw fa-home"></i>หน้าหลัก</a></h1>
+
+            </div>
+            <form action="/mongo2sql" method="POST">
+                <button class="btn btn-lg btn-primary btn-block" name="act" value="mailservice" type="submit">API Mail
+                    Service
+                </button>
+                <button class="btn btn-lg btn-primary btn-block" name="act" value="smsservice" type="submit">SMS Service
+                </button>
+                <button class="btn btn-lg btn-primary btn-block" name="act" value="transferservice"
+                    type="submit">Transfer Service
+                </button>
+                <button class="btn btn-lg btn-primary btn-block" name="act" value="scanservice" type="submit">Scan Ocr
+                    Process
+                </button>
+                <button class="btn btn-lg btn-primary btn-block" name="act" value="apiservice" type="submit">API Service
+                </button>
+            </form>
+
+            <div class="text-center ">
+                <h1><a><i class="fa fa-center fa-database fa-fw"></i>ฐานข้อมูล</a></h1>
+            </div>
+            {% for setocr in session.info['ocrs'] %}
+            <form action="/mongo2sql" method="POST">
+                <input type="hidden" name="act" value="chgocrlot">
+                <input type="hidden" name="ocrlot" value="{{ setocr['_id'] }}">
+                <button class="btn btn-lg  btn-light " type="submit">Lot {{setocr['_id']}}
+                    ( {{setocr['ocrdocs'] }} ) </button>
+            </form>
+            {% endfor %}
+
+
+        </div>
+
+        <div class="card " style="align-self: left ;height: 400px;">
+
+            <div class="text-center ">
+                <h3 class="h2 mb-1 text-primary font-weight-bold">ข้อมูลการสแกนไฟล์ รอบงานที่ {{session.ocrlot}}</h3>
+                <h5 class="h5 mb-3 text-secondary font-weight-normal">version {{info['version']}}</h5>
+                <p>{{info['description']}}</p>
+                <h5>{{ session.transfer }}</h5>
+                <h5> {{ session.loaddata }}</h5>
+
+            </div>
+            <form action="/mongo2sql" method="POST" name="form" id="form{{session.ocrlot}}">
+                <button class="btn btn-lg btn-dark btn-block" id="ocrlot" name="act" value="transfer" type="submit"
+                    onclick="openInNewTab('http://192.168.1.28:5001/mongo2sql/{{session.ocrlot}}');">Transfer Lot
+                    {{session.ocrlot}} to Address!
+                </button>
+            </form>
+        </div>
+
+        <div class="card " style="align-self: left ;width: 350px;height: 400px;">
+            <h5><i class="fa fa-2x fa-folder-open-o" style="color: burlywood ;"></i> Folder Scan :</a></h5>
+            //naserver2/RecoveryScan/Stlscan
+            <br>
+            <br>
+
+            <form action="/mongo2sql" method="POST">
+                <button class="btn btn-lg btn-info btn-block" name="act" value="fileocr" type="submit">Check tif file
+                </button>
+                <button class="btn btn-lg btn-warning btn-block" name="act" value="pyocr" type="submit"
+                    onclick="openInNewTab('http://192.168.1.28:5001/pyocr')">Scan ORC file!
+                </button>
+
+            </form>
+        </div>
+
+
+        <!-- <h3 id="myH1">start mongo2sql</h3> -->
+        <div class="card " style="align-self: left ;height: 400px;">
+            <form class="form-container" method="post" action="/mongo2sql" method="POST" id="fmisform" name="fmisform">
+                <h1>เพิ่มคำผิดบ่อย</h1>
+
+                <label for="email"><b>คำผิด </b></label>
+                <input type="text" id="misword" name="misword" required
+                    style="height: 40px;margin-right: 100px;width: 300px; ;">
+                <br>
+                <br>
+
+                <label for="psw"><b>แก้ไข </b></label>
+                <input type="text" id="rghword" name="rghword" required
+                    style="height: 40px;margin-right: 100px;width: 300px;">
+                <br>
+                <br>
+
+                <button type="submit" class=" btn btn-success" id="addcmis" name="act"
+                    value="addcmis">เพิ่มคำผิดบ่อย</button>
+            </form>
+
+        </div>
+    </div>
+    <br>
+    <div id="myDIV">{{ text }}</div>
+    {% with messages = get_flashed_messages(category_filter=['success']) %}
+    {% if messages %}
+    {% for message in messages %}
+    <h5 class=" alert alert-success" role="alert">{{message}}</h5><br>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+    {% with messages = get_flashed_messages(category_filter=['danger']) %}
+    {% if messages %}
+    {% for message in messages %}
+    <h5 class=" alert alert-danger" role="alert">{{message}}</h5><br>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+</body>
+<script>
+
+    function openForm() {
+        document.getElementById("misform").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("misform").style.display = "none";
+    }
+    function openInNewTab(url) {
+        window.open(url, '_blank').focus();
+    }
+</script>
+<!-- <script>
+    if (typeof (EventSource) !== "undefined") {
+        var source = new EventSource("{{ url_for('mongo2sql') }}");
+        source.onopen = function () {
+            document.getElementById("myH1").innerHTML = "Getting server updates";
+        };
+
+        source.onmessage = function (event) {
+            document.getElementById("myDIV").innerHTML += event.data + "<br>";
+        };
+
+    } else {
+        document.getElementById("myDIV").innerHTML = "Sorry, your browser does not support server-sent events...";
+    }
+    var source = new EventSource("/mongo2sql");
+    source.onmessage = function (event) {
+        $('.progress-bar').css('width', event.data + '%').attr('aria-valuenow', event.data);
+        $('.progress-bar-label').text(event.data + '%');
+        document.getElementById("myDIV").innerHTML += event.data + "<br>";
+        if (event.data == session.totalunloaddate) {
+            source.close()
+        }
+    }    
+</script> -->

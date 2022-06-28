@@ -1,3 +1,8 @@
 /.vscode
 /__pycache__
 /pgvenv
+/twilio.env
+twilio.env
+xrequirements & sms twilio.txt
+./twilio.env
+/flask_session

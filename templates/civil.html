@@ -6,7 +6,7 @@
     <!-- <meta charset="utf-8"> -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>
-        {{info['conllection']}}-STL v3.{{info['version']}}
+        {{info['app']}} v.{{info['version']}}
     </title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,18 +38,17 @@
         <li class="active"><a class="navbar-brand" href="{{ url_for('index') }}">หน้าหลัก</a></li>
       </div> -->
             <ul class="nav navbar-nav ">
-                <li class="active"><a class="navbar-brand" href="{{ url_for('index') }}"><i
-                            class="fa fa-fw fa-home"></i>หน้าหลัก (SET - {{session.ocrlot}})</a>
+                <li class="active"><a class="navbar-brand" href="{{ url_for('profile') }}"><i
+                            class="fa fa-fw fa-home"></i>หน้าหลัก</a>
                 </li>
-                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select SET<span
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">SET {{session.ocrlot}}<span
                             class="caret"></span></a>
                     <ul class="dropdown-menu">
-                        {% for setocr in info['ocrs'] %}
+                        {% for setocr in session.info['ocrs'] %}
                         <li><a href="{{ url_for('setocr',setocr=setocr['_id'] ) }}"><i class="fa fa-book fa-fw"></i>
                                 SET-SCAN
                                 {{setocr['_id']
                                 }}..({{setocr['ocrdocs'] }})</a></li>
-                        <!-- setocr/<int:setocr>') -->
                         {% endfor %}
 
                     </ul>
@@ -130,12 +129,12 @@
                     <!-- class="mx-auto d-block" class="rounded-circle active"-->
                 </li>
 
-                <li class="active"><a href="#"><i class="fa fa-fw fa-user"></i>{{
+                <li class="active"><a href="{{ url_for('profile')}}#"><i class="fa fa-fw fa-user"></i>{{
                         session.name_sur }}</a></li>
 
                 <li><a href="{{ url_for('logout') }}"><i class="fa fa-fw fa-sign-out"></i>ออกจากระบบ</a></li>
 
-                <li class="active"><a href="{{ url_for('transfer') }}">..</a></li>
+                <li class="active"><a href="{{ url_for('mongo2sql') }}">..</a></li>
             </ul>
 
         </div>
@@ -145,6 +144,14 @@
     <!-- container-fluid -->
     <div class="container-fluid" style=" flex-wrap: wrap;display: flex;justify-content: center; margin-top:80px ;">
         <!-- <div class=" container" style=" flex-wrap: wrap;justify-content: center ; display: flex;"> -->
+        {% with messages = get_flashed_messages(category_filter=['danger']) %}
+        {% if messages %}
+        {% for message in messages %}
+        <h5 class="col-lg-4 col-sm-12 alert alert-danger" role="alert">{{message}}</h5><br>
+
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
 
         {% for cn in ocrdata %}
 
@@ -207,6 +214,7 @@
                 <input type="text" id="fnotes" name="notes" value="{{ cn['notes'] }}"
                     style="left: 360px;top: 800px;font-size: 20px; width: 70%;  ">
 
+                <input type="hidden" id="checked{{ cn['index_of_lotfile']}}" name="checked" value="{{ cn['checked'] }}">
 
                 <label class="switch">
                     {% if cn['checked'] %}

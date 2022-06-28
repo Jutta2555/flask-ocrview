@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <!-- <meta charset="utf-8"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+</head>
+
+<body>
+
+    <li class="active">
+        <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fa fa-fw fa-home"></i>หน้าหลัก</a>
+    </li>
+
+
+    <li class="active"><a href="{{ url_for('profile')}}"><i class="fa fa-fw fa-user"></i>{{
+            session.name_sur }}</a></li>
+
+    <li><a href="{{ url_for('logout') }}"><i class="fa fa-fw fa-sign-out"></i>ออกจากระบบ</a></li>
+
+
+    {% if session.phonebooks %}
+    {% for phone in session.phonebooks %}
+    <p scope="row">{{ phone.row_number }}
+        {{ phone.tel_no }} {{ phone.account_name }} {{ phone.Account_no }}</p>
+    {% if phone.sms %}
+    <p><i class="fa-li fa fa-spinner fa-spin"></i>{{ phone.sms }}</p>
+    {% else %}
+    <button type="button" id="btn{{ phone.row_number }}" onclick="s({{ phone.tel_no }})">Send SMS</button>
+    <p id="lb{{ phone.row_number }}" style="display:none;"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>sending....
+    </p>
+    <button type="button" id="btn" onclick="sk()">Send SMS</button>
+    <p id="lb" style="display:none;"><i class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>sending....
+    </p>
+    {% endif %}
+    <p>{{ phone.sms_user }}{{ phone.sms_timestmp }}</p>
+    {% endfor %}
+    {% endif %}
+    <script>
+        function s(tel_no) {
+            console.log(tel_no);
+            let txtphone = "";
+            txtphone = txtphone.concat(tel_no);
+            console.log(txtphone);
+            console.log("lb".concat(tel_no));
+            console.log("lb0639982232");
+            var btn = document.getElementById("btn8");
+            var lb = document.getElementById("lb8");
+            document.getElementById("lb8").style.display = "block";
+            document.getElementById("btn8").style.display = "none";
+            console.log(lb);
+            btn.style.display = "none";
+            lb.style.display = "block";
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    lb.style.display = "none";
+                    btn.style.display = "block";
+                }
+            };
+            xhttp.open("GET", "{{ url_for('sms') }}?tel_no=" + tel_no, true);
+            xhttp.send();
+        }
+        function sk() {
+            var btn = document.getElementById("btn");
+            var lb = document.getElementById("lb");
+            lb.style.display = "block";
+            btn.style.display = "none";
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    lb.style.display = "none";
+                    btn.style.display = "block";
+                }
+            };
+            xhttp.open("GET", "{{ url_for('sms') }}", true);
+            xhttp.send();
+        }
+    </script>
+</body>
+//
+<script>
+//     function sk() {
+//         document.getElementById("lb").style.display = "block";
+//         document.getElementById("btn").style.display = "none";
+//         const box = document.getElementById('btn');
+//         console.log(box); // 👉️ the div element
+//     }
+//     // function s(ph) {
+//     //     console.log(ph);
+//     //     let numb = ph;
+//     //     let text = numb.toString();
+//     //     let strphone = "lb" + text;
+//     //     let smsbtn = "btn" + text;
+//     //     var elem = document.getElementById('#lb' + text);
+//     //     console.log(elem); // 👉️ the div element
+//     //     elem.style.display = "block";
+//     //     document.getElementById("#lb" + text).style.display = "block";
+//     //     // document.getElementById("btn" + text).style.display = "none";
+
+//     // }
+// 
+
+</html >

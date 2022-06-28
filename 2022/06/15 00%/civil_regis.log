@@ -1,0 +1,15 @@
+06/15/2022 04:16:46 PM User นาวิน ดีสม(BBL) login success
+06/15/2022 04:16:46 PM ['linux', 'chrome', '97.0.4692.99', None]
+06/15/2022 04:16:46 PM 127.0.0.1 - - [15/Jun/2022 16:16:46] "[32mPOST /login HTTP/1.1[0m" 302 -
+06/15/2022 04:16:46 PM 127.0.0.1 - - [15/Jun/2022 16:16:46] "GET / HTTP/1.1" 200 -
+06/15/2022 04:16:50 PM User นาวิน ดีสม(BBL) SMS Center Online success
+06/15/2022 04:16:50 PM 127.0.0.1 - - [15/Jun/2022 16:16:50] "[32mGET /sms HTTP/1.1[0m" 302 -
+06/15/2022 04:16:50 PM 127.0.0.1 - - [15/Jun/2022 16:16:50] "GET / HTTP/1.1" 200 -
+06/15/2022 04:16:50 PM 127.0.0.1 - - [15/Jun/2022 16:16:50] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+06/15/2022 04:16:50 PM 127.0.0.1 - - [15/Jun/2022 16:16:50] "[36mGET /static/scripts.js HTTP/1.1[0m" 304 -
+06/15/2022 04:16:53 PM Starting new HTTP connection (1): 192.168.1.28:5001
+06/15/2022 04:16:53 PM http://192.168.1.28:5001 "GET /service/sms HTTP/1.1" 200 84
+06/15/2022 04:16:53 PM 127.0.0.1 - - [15/Jun/2022 16:16:53] "GET /service_sms HTTP/1.1" 200 -
+06/15/2022 04:16:53 PM 127.0.0.1 - - [15/Jun/2022 16:16:53] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+06/15/2022 04:16:53 PM 127.0.0.1 - - [15/Jun/2022 16:16:53] "[36mGET /static/scripts.js HTTP/1.1[0m" 304 -
+06/15/2022 04:18:08 PM  * Detected change in '/home/lenno/playground/flask-ocrview/app.py', reloading

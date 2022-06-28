@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+    <!-- <meta charset="utf-8"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+        {{info['app']}} v.{{info['version']}}
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@100&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script> -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- เวอร์ชั่นสคริป ที่ใช้งาน ดรอบลิส 3.6.0 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+    <style>
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 30px;
+            height: 15px;
+            margin-top: 5px;
+            margin-left: 5px;
+            margin-bottom: 5px;
+            /* bottom: 850px; */
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .1s;
+            transition: .1s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 15px;
+            width: 15px;
+            left: 1px;
+            bottom: 1px;
+            background-color: white;
+            -webkit-transition: .1s;
+            transition: .1s;
+        }
+
+        input:checked+.slider {
+            background-color: #57acf2b5;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:focus+.slider {
+            box-shadow: 0 0 1px #2196F3;
+            outline-width: 1px;
+            outline-style: solid;
+            /* outline-style: dashed; */
+            outline-color: rgb(100, 208, 235);
+        }
+
+        input:checked+.slider:before {
+            -webkit-transform: translateX(100px);
+            -ms-transform: translateX(50px);
+            transform: translateX(46px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav class="navbar  navbar-fixed-top" style="background-color: #f5f5f5;">
+        <!--  navbar-inverse-->
+        <div class="container-fluid">
+            <ul class="nav navbar-nav ">
+                <li class="active">
+                    <a class="navbar-brand" href="{{ url_for('index') }}"><i class="fa fa-fw fa-home"></i>หน้าหลัก</a>
+                </li>
+
+
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    ...
+                    <li class="dropdown-submenu">
+                        <a tabindex="-1" href="#">More options</a>
+                        <ul class="dropdown-menu">
+                            ...
+                        </ul>
+                    </li>
+                </ul>
+
+
+                <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown">Send SMS<span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu -ms-transform" style="width: 1200px;" role="menu" aria-labelledby="dLabel">
+                        {% if session.phonebooks %}
+                        <table class="table ">
+                            <!-- --table-striped -->
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Phone</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Account</th>
+                                    <th scope="col">SMS</th>
+                                    <th scope="col">Sender</th>
+                                    <th scope="col">Time</th>
+                                </tr>
+                            </thead>
+                            {% for phone in session.phonebooks %}
+                            <tbody class="dropdown-submenu">
+                                <tr>
+                                    <th scope="row">{{ phone.row_number }}</th>
+                                    <td>{{ phone.tel_no }}</td>
+                                    <td>{{ phone.account_name }}</td>
+                                    <td>{{ phone.Account_no }}</td>
+                                    {% if phone.sms %}
+                                    <td>{{ phone.sms }}</td>
+                                    {% else %}
+                                    <td>
+                                        <button class="btn btn-primary" type="submit" tabindex="-1"
+                                            id="btn{{ phone.row_number }}" data-toggle="button"
+                                            onclick="s({{ phone.tel_no }},{{ phone.row_number }})">send <i
+                                                class="fa fa-fw fa-envelope-o"></i></button>
+                                        <p id="lb{{ phone.row_number }}" style="display:none;"><i
+                                                class="fa fa-spinner fa-pulse fa-1x fa-fw"></i>sending....</p>
+
+                                    </td>
+                                    {% endif %}
+                                    <td>{{ phone.sms_user }}</td>
+                                    <td>{{ phone.sms_timestmp }}</td>
+                                </tr>
+                            </tbody>
+                            {% endfor %}
+                        </table>
+                        {% endif %}
+
+                    </ul>
+                </li>
+
+
+                <form class="navbar-form navbar-left">
+                    <!-- <div class="form-group"> -->
+                    <input type="text" name="tel_nof" id="tel_nof" class="form-control"
+                        placeholder="ค้นหาเบอร์โทรศัพท์">
+                    <!-- </div> -->
+                    <button type="submit" onclick=findmoblie() class="btn btn-default" style="margin-left: 220px;"><i
+                            class="fa fa-fw fa-search"></i>ค้นหา</button>
+
+                </form>
+                <!-- <li><a href="{{ url_for('service_sms') }}"><i class="fa fa-fw fa-search"></i>service sms</a></li> -->
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active">
+                    <img src="{{ session.picture }}" style="height:50px ;width:50px ;">
+                    <!-- class="mx-auto d-block" class="rounded-circle active"-->
+                </li>
+                <li class="active"><a href="{{ url_for('profile')}}"><i class="fa fa-fw fa-user"></i>{{
+                        session.name_sur }}</a></li>
+
+                <li><a href="{{ url_for('logout') }}"><i class="fa fa-fw fa-sign-out"></i>ออกจากระบบ</a></li>
+
+            </ul>
+
+
+
+        </div>
+    </nav>
+
+
+    <!-- container-fluid -->
+    <div class="container-fluid" style=" flex-wrap: wrap;display: flex;justify-content: center; margin-top:50px ;">
+        <!-- <div class=" container" style=" flex-wrap: wrap;justify-content: center ; display: flex;"> -->
+        {% if session.smsbox %}
+        <div class="media" style="color: #000000;background-color: cadetblue;">
+            <div class="media-body">
+                <h2 style=" flex-wrap: wrap;display: flex;justify-content: left;margin-left: 20px; ">
+                    SMS INBOX <i class="fa fa-fw  fa-inbox"></i></h2>
+
+                <h5 style=" flex-wrap: wrap;display: flex;justify-content: left;margin-left: 20px; ">
+                    แสดงข้อมูลย้อนหลังไม่เกิน 10 วัน <i class="fa fa-fw  fa-calendar"></i></h5>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">COMP</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Account</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Massage</th>
+                </tr>
+            </thead>
+            {% for sms in session.smsbox %}
+            <tbody>
+                <tr>
+                    <th scope="row">{{ sms.row_number }}</th>
+                    <td>{{ sms.company_code }}</td>
+                    <td>{{ sms.account_name }}</td>
+                    <td>{{ sms.account_no }}</td>
+                    <td>{{ sms.number }}</td>
+                    <td>{{ sms.timestamp }}</td>
+                    <td>{{ sms.text }}</td>
+                    </td>
+                </tr>
+            </tbody>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+
+</body>
+<script>
+    function s(tel_no, row_number) {
+        switch (row_number) {
+            case 1:
+                document.getElementById("lb1").style.display = "block";
+                document.getElementById("btn1").style.display = "none";
+                break;
+            case 2:
+                document.getElementById("lb2").style.display = "block";
+                document.getElementById("btn2").style.display = "none";
+                break;
+            case 3:
+                document.getElementById("lb3").style.display = "block";
+                document.getElementById("btn3").style.display = "none";
+                break;
+            case 4:
+                document.getElementById("lb4").style.display = "block";
+                document.getElementById("btn4").style.display = "none";
+                break;
+            case 5:
+                document.getElementById("lb5").style.display = "block";
+                document.getElementById("btn5").style.display = "none";
+                break;
+            case 6:
+                document.getElementById("lb6").style.display = "block";
+                document.getElementById("btn6").style.display = "none";
+                break;
+            case 7:
+                document.getElementById("lb7").style.display = "block";
+                document.getElementById("btn7").style.display = "none";
+                break;
+            default:
+            // code block
+        }
+    }
+
+</script>
+
+</html>
